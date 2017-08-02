@@ -1,0 +1,2 @@
+# vkrinitsyn.github.io
+blog
