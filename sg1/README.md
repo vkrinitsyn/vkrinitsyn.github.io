@@ -1,2 +1,5 @@
 ## [Schema guard](/sg1/)
-Declarative and Imperative (Flyway inspired) DB schema management   
+Declarative    
+
+
+## [Part Two - ](/sg2/)

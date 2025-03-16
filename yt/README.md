@@ -1,23 +1,8 @@
 # [Articles](https://vkrinitsyn.github.io)
 
-## [Schema guard](/sg1/)
-Declarative and Imperative (Flyway inspired) DB schema management   
-
-## [RPPD](/rppd/) Rust Python Postgres
-Serverless platform for run
 
 ## [YaXaHa](/yt/)
-Postgres based cluster
-
-
-## [ETCD](/etcd/)
-Etcd server PoC for queue  
-
-## Tools
-
-### [Marg](/marg/) - Metaargs for  console rust apps
-Few connection to access database to store everything else in DB 
-
-### [Shim](/shim/) - histogram tool
-Calculate average for a last few (minutes)
-
+Yet Another XA (transactional) HA (High-availability) Cluster with Master-Master,
+- no dedicated single master as entry point
+- governed by RAFT algorithm
+- uses standard (vanilla) PostgreSQL server with extention AND optional patched PGbouncer

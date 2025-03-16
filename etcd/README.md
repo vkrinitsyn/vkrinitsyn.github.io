@@ -1,3 +1,3 @@
 ## [ETCD](/etcd/)
-Etcd server PoC for queue  
+Etcd server PoC for messaging queue  
 
