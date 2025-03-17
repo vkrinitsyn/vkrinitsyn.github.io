@@ -171,11 +171,13 @@ The final table component is trigger definition, which requires a function (func
       proc: make_lower_email() -- you have to have this function created
 ```
 
-> [!IMPORTANT] Current YAML Limitations
+> [!IMPORTANT]
+> Current YAML Limitations
 > - Adding or modifying sql or constraint fields in YAML for an existing table won’t trigger ALTER TABLE commands, except for foreign keys (but not additional fk.sql).  
 > - Composite primary keys (multi-column) are unsupported, including foreign keys referencing such tables.
 
-> [!IMPORTANT] Schema Snapshot Restrictions
+> [!IMPORTANT]
+> Schema Snapshot Restrictions
 > - When creating a snapshot of an existing database schema, the YAML includes:  
 > Table and column names, types, foreign keys, defaults, and nullable constraints.
 > However, it excludes:  
