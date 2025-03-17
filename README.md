@@ -2,7 +2,7 @@
 
 ## [Schema guard](/sg1/) 
 Declarative and Imperative (Flyway inspired) DB schema management.   
-This Rust based opensource project is a portion of SchemaGuard complete commercial solution. 
+[This](https://github.com/vkrinitsyn/schema_guard) Rust based opensource project is a portion of [SchemaGuard](/sg1/) complete commercial solution. 
 - Designed for embed schema into Rust code.
 - Support flexible schema updates if required
 - Does not require history table
