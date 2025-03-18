@@ -1,5 +1,5 @@
 # [Schema guard](/sg1/)
-The [declarative](https://github.com/vkrinitsyn/schema_guard)) Rust based portion of the [project](https://www.dbinvent.com/rdbm/) discuss bellow.
+The [declarative](https://github.com/vkrinitsyn/schema_guard) Rust based portion of the [project](https://www.dbinvent.com/rdbm/) discuss bellow.
 
 Almost every website, from the simplest blogs to complex platforms, relies on databases. Of course, databases are no longer accessed directly from the code that generates the website, as was common in the past with PHP and JSP. Modern websites are typically structured in two or three layers:  
 Static or pseudo-static CRM content, which either doesn’t use a database or interacts with it as a third-party service.  
