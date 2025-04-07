@@ -9,7 +9,9 @@ Declarative and Imperative (Flyway inspired) DB schema management.
 - Support flexible schema updates if required
 - Does not require history table
 
-## RPPD
+## RPPD Rust-Python-Postgres-Discovery
+Now with etcd queueing:
+
 ![kdpw](arch.jpg)
 
 [link](/rppd/) 
