@@ -1,28 +1,34 @@
 # [Articles](https://vkrinitsyn.github.io)
 
-## [Schema guard](/sg1/) 
+
+## Schema guard
+[link guard](/sg1/) 
 Declarative and Imperative (Flyway inspired) DB schema management.   
 [This](https://github.com/vkrinitsyn/schema_guard) Rust based opensource project is a portion of [SchemaGuard](/sg1/) complete commercial solution. 
 - Designed for embed schema into Rust code.
 - Support flexible schema updates if required
 - Does not require history table
 
+## RPPD
+![kdpw](arch.jpg)
 
-## [RPPD](/rppd/) 
+[link](/rppd/) 
 Rust-Python-Postgres-Discovery.
 Serverless platform for run Python code with Postgres:
 - Postgres extension with a trigger to notify backend service about a insert or update or delete event
 - Rust based opensource project with languages support (i18n)
 
 
-## [YaXaHa](/yt/)
+## YaXaHa
+[link](/yt/)
 MVP of Postgres based cluster governed by RAFT algorithm:
 - XA transaction based data consistency guqranee
 - HA (High-availability) - no dedicated single master as entry point  
 - uses standard (vanilla) PostgreSQL server with extention AND optional patched PGbouncer
 
 
-## [ETCD](/etcd/)
+## ETCD 
+[link](/etcd/)
 Etcd server PoC for messaging queue   
 - etcd API v3 compatible client using protobuf
 - Lightweight [queue](https://github.com/vkrinitsyn/etcd/blob/main/queue.md) with order and delivery guarantee
@@ -31,10 +37,12 @@ Etcd server PoC for messaging queue
 
 ## Tools
 
-### [Marg](https://github.com/vkrinitsyn/marg) - MetaArgs for console rust apps
+### Marg - MetaArgs for console rust apps
+[link](https://github.com/vkrinitsyn/marg) 
 Fewer application configuration to connection to database and store everything else in DB.
 - Available as cargo dependency in Rust:
   ``` marg = "0.3.0" ```
 
-### [Shim](https://github.com/vkrinitsyn/shim/) - Calculate sliding average
+### Shims
+[link](https://github.com/vkrinitsyn/shim/) - Calculate sliding average
 Percentile and bucket size configuration support for histogram calculation.
