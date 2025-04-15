@@ -2,9 +2,9 @@
 
 
 ## Schema guard
-[link guard](/sg1/) 
+[link](/sg1#schema-guard) 
 Declarative and Imperative (Flyway inspired) DB schema management.   
-[This](https://github.com/vkrinitsyn/schema_guard) Rust based opensource project is a portion of [SchemaGuard](/sg1/) complete commercial solution. 
+[This](https://github.com/vkrinitsyn/schema_guard) Rust based opensource project is a portion of [SchemaGuard](/sg1#schema-guard) complete commercial solution. 
 - Designed for embed schema into Rust code.
 - Support flexible schema updates if required
 - Does not require history table
@@ -14,7 +14,7 @@ Now with etcd queueing:
 
 ![kdpw](arch.jpg)
 
-[link](/rppd/) 
+[link](/rppd#rppd---rust-python-postgres-discovery) 
 Rust-Python-Postgres-Discovery.
 Serverless platform for run Python code with Postgres:
 - Postgres extension with a trigger to notify backend service about a insert or update or delete event
@@ -22,7 +22,7 @@ Serverless platform for run Python code with Postgres:
 
 
 ## YaXaHa
-[link](/yt/)
+[link](/yt#yaxaha)
 MVP of Postgres based cluster governed by RAFT algorithm:
 - XA transaction based data consistency guqranee
 - HA (High-availability) - no dedicated single master as entry point  
@@ -30,7 +30,7 @@ MVP of Postgres based cluster governed by RAFT algorithm:
 
 
 ## ETCD 
-[link](/etcd/)
+[link](/etcd#etcd)
 Etcd server PoC for messaging queue   
 - etcd API v3 compatible client using protobuf
 - Lightweight [queue](https://github.com/vkrinitsyn/etcd/blob/main/queue.md) with order and delivery guarantee
