@@ -21,6 +21,12 @@ Serverless platform for run Python code with Postgres:
 - Rust based opensource project with languages support (i18n)
 
 
+## Concurrent document modification
+[link](https://medium.com/@v.krinitsyn/concurrent-document-modification-ea1b6e628e2d)
+When two or more users intend to modify the same JSON document in same row, they will face a delay or data corruption, but actually it’s possible to perform with a patching model.
+
+
+
 ## YaXaHa
 [link](/yt#yaxaha)
 MVP of Postgres based cluster governed by RAFT algorithm:
