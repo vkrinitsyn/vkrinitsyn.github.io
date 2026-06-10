@@ -3,8 +3,15 @@
 
 ## [YaXaHa](/yt/)
 Yet Another XA (transactional) HA (High-availability) Cluster with Master-Master,
-- no dedicated single master as entry point
-- governed by RAFT algorithm
-- uses standard (vanilla) PostgreSQL server with extention AND optional patched PGbouncer
+
+Linear scalability possible: [CAP](/cap.md)
+
+### Exclusive key features:
+- Vanilla Postgres use - no changes in original Postgres codebase with access to all build-in features.
+- True Master-Master, no single entry point with programmatically configurable transaction consistency
+- Easy to onboarding/decommissioning cluster solution without data migration necessity
+- Growing ecosystem includes KeyValue (etcd) cache and lambda like serverless framework etc
+- C/Rust lang based implementation
+
 
 https://www.dbinvent.com/cluster/
