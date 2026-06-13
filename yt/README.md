@@ -5,6 +5,7 @@
 Yet Another XA (transactional) HA (High-availability) Cluster with Master-Master,
 
 Linear scalability possible: [CAP](/cap.md)
+DNS for service discovery: [DNS](dns.md).
 
 ### Exclusive key features:
 - Vanilla Postgres use - no changes in original Postgres codebase with access to all build-in features.
