@@ -56,8 +56,10 @@ in time.
 [link](https://github.com/vkrinitsyn/marg) 
 Fewer application configuration to connection to database and store everything else in DB.
 - Available as cargo dependency in Rust:
-  ``` marg = "0.3.0" ```
+  ``` marg = "0.4.0" ```
 
 ### Shims
 [link](https://github.com/vkrinitsyn/shim/) - Calculate sliding average
 Percentile and bucket size configuration support for histogram calculation.
+- Available as cargo dependency in Rust:
+  ``` shims = "0.1.0" ```
