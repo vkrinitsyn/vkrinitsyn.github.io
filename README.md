@@ -41,7 +41,14 @@ Etcd server PoC for messaging queue
 - etcd API v3 compatible client using protobuf
 - Lightweight [queue](https://github.com/vkrinitsyn/etcd/blob/main/queue.md) with order and delivery guarantee
 - Rust based opensource project
-
+ 
+##  Decentralized Skills Exchange and Mutual Credit Network
+[link](/qw/abstract.md#decentralized-skills-exchange-and-mutual-credit-network)
+A search-aware framework for discovering and appreciating developers across open source,
+startup, and IT projects — without requiring money to change hands.
+Participants find each other through verified skill reputation, commit to work via
+signed contracts, and compensate contributions with personal credit tokens denominated
+in time.
 
 ## Tools
 
