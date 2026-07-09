@@ -46,10 +46,29 @@ Programmatically defined synchronization rules allows splitting data to redundan
 Build your own platform like AWS lambda or Azure Server Function without a vendor lock.
 
 ### Web UI - in progress
-Simplify cluster setup by using web UI and provide user-friendly cluster management, including schema changes and testing.
+Simplify cluster setup by using web UI and provide user-friendly cluster management, including schema changes (like Flyway) and testing.
 
 ### Testing - in todo as the most priority to prove the durability with a time
 Perform comprehensive consistency, stress and load testing. Determine SLA and TPS.
 
 ### Sharding and Partitioning - the architecture and analysis phase
-From MPP to Global hierarchical cluster model to substitute client-server interaction and even a gaming / mobile API.
+From MPP to Global hierarchical cluster model to substitute client-server interaction and even a MMO gaming / mobile API 
+includes all configurations from a Consistent storage to realtime processing.
+
+****
+- MPP - massive parallel (query) processing, which is a distributed database architecture that allows for the parallel processing of queries across multiple nodes.
+ This architecture is designed to handle large volumes of data and complex queries by distributing the workload across multiple servers, 
+enabling faster query execution and improved performance.
+- Global hierarchical cluster model - a distributed database architecture that organizes nodes in a hierarchical structure,
+ allowing for efficient data distribution and query processing across multiple levels of the hierarchy. 
+ With a programmatically defined hierarchy, data can be partitioned and replicated across different levels,
+ This model can improve scalability, fault tolerance, and performance by optimizing data placement and query routing based on the hierarchical relationships between nodes.
+- MMO gaming backend framework - a backend architecture designed to support the massive scale and real-time interactions of multiplayer online games. 
+ It typically involves distributed servers, load balancing, and data synchronization mechanisms to handle large numbers of concurrent players and ensure a seamless gaming experience.
+- Consistent storage - a storage system that guarantees data consistency across multiple nodes or replicas, ensuring that all copies of the data remain synchronized and up-to-date. 
+ This is crucial for distributed databases and applications that require strong consistency guarantees to prevent data anomalies and maintain data integrity.
+- Real-time processing - the ability to process and respond to data changes as they occur, ensuring that applications can make informed decisions based on the most current information.
+- Mobile API - a set of application programming interfaces (APIs) specifically designed for mobile applications, but with a Postgres backend. 
+ These APIs enable mobile apps to interact with the database, retrieve and manipulate data, and perform various operations while ensuring efficient communication and data synchronization between the mobile client and the backend server.
+ 
+
