@@ -6,6 +6,11 @@
 
 ---
 
+_The concept of a problem we solve as simple as a HDD disk swap like RAID or NAS / Network storage, but for a database._
+_Existing solutions works but (a) it's costy and/or (b) cloud/vendor lock & required a data transfer/downtime or non-reliable in matter of data consistency._
+_The database is an old technology, but almost all internet websites use it, and when you needs a reliability with some complex solutions, plus performance, than you needs something new._
+
+
 ## Problems, that many of IT projects faced
 
 ### Data consistency - when transactions are not about money transfer
@@ -53,7 +58,7 @@ Perform comprehensive consistency, stress and load testing. Determine SLA and TP
 
 ### Sharding and Partitioning - the architecture and analysis phase
 From MPP to Global hierarchical cluster model to substitute client-server interaction and even a MMO gaming / mobile API 
-includes all configurations from a Consistent storage to realtime processing.
+includes all configurations from a Consistent storage to Realtime processing.
 
 ****
 - MPP - massive parallel (query) processing, which is a distributed database architecture that allows for the parallel processing of queries across multiple nodes.
