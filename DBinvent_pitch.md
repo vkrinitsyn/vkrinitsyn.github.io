@@ -6,6 +6,8 @@
 
 ---
 
+https://youtu.be/Ja-EIV2dzF0
+
 _The concept of a problem we solve as simple as a HDD disk swap like RAID or NAS / Network storage, but for a database._
 _Existing solutions works but (a) it's costy and/or (b) cloud/vendor lock & required a data transfer/downtime or non-reliable in matter of data consistency._
 _The database is an old technology, but almost all internet websites use it, and when you needs a reliability with some complex solutions, plus performance, than you needs something new._
