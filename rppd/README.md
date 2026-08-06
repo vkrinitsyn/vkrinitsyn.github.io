@@ -1,5 +1,6 @@
 # RPPD - Rust Python Postgres Discovery
 
+![overview](rppd.etcd.svg)
 
 ## Build
 > [!IMPORTANT]
