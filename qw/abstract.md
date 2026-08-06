@@ -240,4 +240,10 @@ it computes, matches, and mixes — but the network verifies, and the network pr
 
 ---
 
-2021'6 Vladimir Krinitsyn
+## FAQ
+
+[list](qw-design-faq.md) of open questions and design decisions
+
+---
+
+2026 Vladimir Krinitsyn
