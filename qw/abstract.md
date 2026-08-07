@@ -329,6 +329,94 @@ friction, without holding deposits or issuing money.
 
 ---
 
+## Basic Use Cases
+
+Every algorithm below is **user-centric**: it describes the expected behaviour of
+a conforming client, not protocol-mandated logic. Any party may reconfigure the
+thresholds or replace the algorithm outright.
+
+Two local filters apply to every inbound request before a human sees it. A client
+auto-rejects on the following, though the recipient may always override manually
+and admit a request that failed either threshold:
+
+- **Minimum reputation** — the requester's trust score, computed by the
+  recipient's own rules for the relevant domain, falls below the configured
+  threshold.
+- **Position limit** — the balance of Quants given versus taken with that
+  counterparty exceeds the recipient's exposure ceiling, which itself scales with
+  how much work that counterparty has recently completed.
+
+Both thresholds are private, and a declined request carries no reason, so they
+cannot be probed and tuned around.
+
+### Introduce
+
+Introduction is a **contact** operation, not a contract one — introducing a
+contract is proposing a job, covered below.
+
+- Introduce yourself to someone you have found, or introduce two of your own
+  contacts to each other, passing along the chain of connections that links them.
+  The introducer signs, so an introduction is an attributable act with their
+  reputation behind it.
+- Exchange profiles: skill tags, plus completed jobs and contracts as evidence.
+  Fields may be redacted for privacy or NDA — selective disclosure keeps the
+  signature verifiable over whatever remains.
+- Accepting an introduction adds an edge to the recipient's contact graph and
+  makes them reachable by relayed queries at that hop. The edge asserts
+  acquaintance, not competence; only completed, countersigned work carries trust
+  in a domain.
+- Accept a history request to receive a signed, filtered work history from a contact. The
+  history is scoped by skill tag and time window, and the recipient may verify
+  the signature and check for omissions.
+
+### Find a contributor by skill and reputation
+
+- Query by skill tag and reputation threshold; results are ranked by the
+  querier's own trust computation for that domain.
+- Relay the query outward through contacts up to a maximum hop count. Every hop
+  signs as it forwards, so an answer arrives with its provenance attached.
+- Aggregate reputation across the returned paths — several independent paths to
+  the same contributor is a stronger signal than one.
+
+### Propose a job
+
+- Submit a job proposal with a description, the required skills, and the chain of
+  connections.
+- Reply with a **counteroffer**, which neither accepts nor rejects: it supersedes
+  the terms and hands the proposal back. Either side may counter again until one
+  of them signs.
+
+### Commit a contract
+
+- Request review of a completed job or of a delivered milestone, with possible feedback.
+- Both parties countersign the resulting contribution record — the one atomic
+  step in the lifecycle, and the point at which the record enters both
+  histories.
+
+### Submit an appeal
+
+- Ask a third party to review the job and its result. Auditors are drawn from the
+  intersection of both parties' webs of trust, or otherwise accepted by both.
+- The opinion attaches to the auditor's own record and carries weight in
+  proportion to their standing. "Disputed, no audit" is a valid terminal state.
+
+### Amend a person record
+
+- Request replacement of an account's signing key after loss or compromise. The
+  request is countersigned by a quorum of trusted contacts confirming over
+  independent channels — the multi-friend recovery described earlier.
+- The new key is published into the record graph as a continuation of the same
+  account, and the old key is marked revoked from a stated timestamp. Reputation
+  attaches to the account's history, not to the key material, so nothing
+  accumulated is lost.
+- This amends no job record; it restores access to a person's own account. The
+  old key stays valid for verifying everything it signed before revocation but
+  cannot sign anything new — a record signed by a revoked key afterwards raises
+  an alert rather than being silently dropped.
+
+
+---
+
 ## Summary
 
 This is a **Peer-Verified Contribution Network**: time contributed to shared

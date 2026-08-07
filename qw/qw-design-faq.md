@@ -180,6 +180,32 @@ Better modeled as **Verifiable Credentials**: issuer is the counterparty,
 subject is the worker, claim is time and skill. Gives DIDs, mature mobile
 wallets, and SD-JWT/BBS+ selective disclosure natively.
 
+### Q: What happens when a signing key is lost or compromised?
+
+The account survives the key. A **person record amendment** publishes a
+replacement as a continuation of the same account and revokes the prior key from
+a stated timestamp. Reputation attaches to the account's history, not to the key
+material, so nothing accumulated is lost — which is what separates this from the
+abandonment attack above, where the history is what the attacker is discarding.
+
+Authorisation is social, matching recovery everywhere else in the design: a
+quorum of the account's trusted contacts countersigns, confirming over
+independent channels. That threshold is what makes a stolen key insufficient on
+its own — an attacker holding it still has to convince the account's contacts,
+and the legitimate holder can raise a competing amendment. Quorum size and
+membership are the account holder's own configuration, set in advance.
+
+Two properties to hold onto:
+
+| Property | Why |
+|---|---|
+| Revocation is **not** retroactive | Signatures before the timestamp stay valid; otherwise one lost phone evaporates every past contract |
+| A new signature under a revoked key is an **alert**, not a rejection | It is the strongest available evidence that a key is in hostile hands — surface it, don't silently drop the record |
+
+Routine device changes never reach this path: under the controller-DID model
+(§1), device keys are added and removed beneath the controller. Amendment is for
+the controller itself.
+
 ---
 
 ## 4. Privacy & Disclosure
@@ -292,12 +318,41 @@ limbo, and reduces the incentive to abandon an identity.
 | Step | Signed by | Atomic? |
 |---|---|---|
 | Offer | Client | No |
+| Counteroffer (repeatable) | Either party | No |
 | Accept | Worker | No |
 | Completion / acceptance | Each separately | No |
 | Credit issuance | Both | Yes — countersign |
 
 Only the last step needs atomicity. Everything prior tolerates one party being
 offline, which is the mobile reality.
+
+### Q: How does a counteroffer fit the lifecycle?
+
+A counteroffer **neither accepts nor rejects**. It supersedes the terms of the
+offer it references and hands the proposal back, so either party may counter
+repeatedly; only a signed Accept ends the exchange.
+
+Each version is signed by whoever proposed it, which makes the negotiation itself
+part of the record — useful later when an auditor needs to know what was actually
+agreed. No version prior to the accepted one carries any obligation, and a
+negotiation that ends without an Accept leaves nothing in either party's history.
+
+### Q: What stops unwanted requests from reaching a participant at all?
+
+A conforming client applies two local admission filters before surfacing
+anything: **minimum reputation** for the relevant domain, computed with the
+recipient's own weights, and a **position limit** on Quants given versus taken
+with that counterparty.
+
+Both are per-participant configuration, never protocol-mandated, and a declined
+request returns no reason — thresholds stay private precisely so they cannot be
+probed and tuned around.
+
+This is the same market-pricing mechanism as record acceptance, moved earlier in
+the lifecycle. The protocol still refuses nobody: a chronic over-issuer or an
+unknown-risk fresh key simply falls below more and more counterparties' filters.
+It also gives spam a cost floor that needs no global rule, complementing the
+per-contact relay policies in §6.
 
 ---
 
