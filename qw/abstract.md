@@ -2,7 +2,8 @@
 
 *Time contributed to shared projects, signed by the people you worked with.*
 
-Available soon at https://knownby.work/ - Skills confirmed by the people you worked with. Found through friends of friends.
+Available soon at https://knownby.work/ - Skills confirmed by the people you worked with. 
+Found through friends of friends.
 
 ## Overview
 
