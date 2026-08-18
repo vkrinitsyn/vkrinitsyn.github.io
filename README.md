@@ -1,7 +1,5 @@
 # [Articles](https://vkrinitsyn.github.io)
 
-## DBinvent
-Pitch [link](/DBinvent_pitch.md)
 
 ## Schema guard
 [link](/sg1#schema-guard) 
@@ -65,3 +63,7 @@ Fewer application configuration to connection to database and store everything e
 Percentile and bucket size configuration support for histogram calculation.
 - Available as cargo dependency in Rust:
   ``` shims = "0.1.0" ```
+
+
+---
+Other links [DBinvent](https://DBinvent.github.io)
