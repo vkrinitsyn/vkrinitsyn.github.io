@@ -4,6 +4,7 @@
 ## [YaXaHa](/yt/)
 Yet Another XA (transactional) HA (High-availability) Cluster with Master-Master,
 
+Performance analysis: [2PC](https://dbinvent.github.io/yaxaha-cluster-performance)
 Linear scalability possible: [CAP](/cap.md)
 DNS for service discovery: [DNS](dns.md).
 

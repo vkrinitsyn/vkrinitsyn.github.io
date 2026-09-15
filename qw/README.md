@@ -8,4 +8,4 @@
 
 ---
 
-Available soon at https://knownby.work/
+Available at https://knownby.work/
