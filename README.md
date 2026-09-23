@@ -1,6 +1,22 @@
 # [Articles](https://vkrinitsyn.github.io)
 
 
+## YaXaHa
+[link](/yt#yaxaha)
+The cluster like in cloud, but better, and yours: vanilla PostgreSQL plus an extension.
+No forked engine, no dedicated master, no vendor lock &mdash; [dbinvent.com/cluster](https://dbinvent.com/cluster/)
+- **Strong consistency on write, eventual on read** - always readable, and writes wait only for what correctness requires
+- **Virtual dynamic partitioning** - transaction boundaries are derived at runtime, so disjoint writes spread across nodes
+- **RAFT consensus, not a single entry point** - the coordinator arbitrates and assigns workers, it never becomes the bottleneck
+- **Synchronization as configuration** - per-table rules decide what is redundant, what is local, and how strong each commit has to be
+- **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
+- **Self-healing** - continuous placement verification, online partition migration, and recovery that repairs rather than reports
+- **MPP via Apache DataFusion** - analytics planned against the declared topology, reachable from server functions and cluster-synced tables
+
+Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 mix, at equal replication scope.
+[What replication actually costs](https://dbinvent.github.io/yaxaha-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md)
+
+
 ## Schema guard
 [link](/sg1#schema-guard) 
 Declarative and Imperative (Flyway inspired) DB schema management.   
@@ -25,14 +41,6 @@ Serverless platform for run Python code with Postgres:
 [link](https://medium.com/@v.krinitsyn/concurrent-document-modification-ea1b6e628e2d)
 When two or more users intend to modify the same JSON document in same row, they will face a delay or data corruption, but actually it’s possible to perform with a patching model.
 
-
-
-## YaXaHa
-[link](/yt#yaxaha)
-MVP of Postgres based cluster governed by RAFT algorithm:
-- XA transaction based data consistency guqranee
-- HA (High-availability) - no dedicated single master as entry point  
-- uses standard (vanilla) PostgreSQL server with extention AND optional patched PGbouncer
 
 
 ## ETCD 
