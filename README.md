@@ -5,6 +5,11 @@
 [link](/yt#yaxaha)
 The cluster like in cloud, but better, and yours: vanilla PostgreSQL plus an extension.
 No forked engine, no dedicated master, no vendor lock &mdash; [dbinvent.com/cluster](https://dbinvent.com/cluster/)
+- **AI smart dispatcher on a local model** - ask in plain language with `yt_llm('...')` and get plain PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives ([how it works](/yt/llm.md))
+  - **Local model** - llama.cpp on your own hardware, a CPU is enough, no cloud service; the model sees only the catalog (tables, columns, keys, comments), never a row
+  - **Placement decides, not the model** - the model picks the tables, the node picks the engine from where they live: whole here, sharded over the nodes, or in ClickHouse
+  - **Never a partial number** - data this node does not hold whole is read where it is whole, or the question is refused with the reason
+  - **Checked before a row is read** - every statement is planned first and runs read-only; the DataFusion script is a fixed template, so the model writes SQL, never code
 - **Strong consistency on write, eventual on read** - always readable, and writes wait only for what correctness requires
 - **Virtual dynamic partitioning** - transaction boundaries are derived at runtime, so disjoint writes spread across nodes
 - **RAFT consensus, not a single entry point** - the coordinator arbitrates and assigns workers, it never becomes the bottleneck
