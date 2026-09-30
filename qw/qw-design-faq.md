@@ -279,6 +279,42 @@ carries none. The protocol never requires a real name — only real,
 counterparty-signed reputation.
 
 
+### Q: Can a bot-farm operator just pay themselves a huge balance?
+
+**Worked example** — Joe spins up a bot farm: a million bot accounts,
+`Jo1`...`Jo1M`, each signed into Joe's own contact graph. The bots "accept"
+1B (aggregate) units of work credited to Joe.
+
+**Does that make Joe's balance 1B?** Yes and no.
+
+- **Yes, mechanically**: `net_position` is a pure derived query over signed
+  records — a million bots each countersigning a completion in Joe's favor
+  produces exactly the balance the math says it does. The bots now
+  collectively owe Joe 1B, and Joe can "collect" by asking them for work
+  back — the ledger has no way to know those million signers aren't
+  independent.
+- **No, functionally**: that balance is only redeemable *inside the farm*.
+  To call in a favor from anyone else, that person has to recognize the
+  bots' reputation — and reputation is never global, always per-viewer,
+  built from *someone else's* independently-verified signature on
+  completed work. The "no global score" rule cuts both ways: it also means
+  no self-issued score can borrow trust from outside.
+
+**So could Joe build that outside reputation for real?** Yes, in
+principle — put the bots to work on real jobs for real, independent
+counterparties (e.g. an AI compute farm actually delivering work someone
+else signs off on). At that point they're not a Sybil attack any more,
+they're a large legitimate operator, and a balance earned that way is real
+by the same definition.
+
+**And if they're just spam instead?** Any bot that tries to spend the
+farm's fake internal reputation against a real outside party is the one
+that gets flagged. Flagging a single signer inside a fully-interconnected
+million-bot graph cascades to every account behind it in one shot (the
+cascade block, above) — the farm's own interconnectedness, the thing that
+let it fake a balance cheaply, is exactly what makes it collapse entirely
+the moment one edge of it touches the real world.
+
 ### Q: How is pricing set, and does the mixer break it?
 
 ** pricing is a pure market, and there is no mixer to break it.**
@@ -353,6 +389,18 @@ the lifecycle. The protocol still refuses nobody: a chronic over-issuer or an
 unknown-risk fresh key simply falls below more and more counterparties' filters.
 It also gives spam a cost floor that needs no global rule, complementing the
 per-contact relay policies in §6.
+
+### Q: How is the "minimum reputation" score actually computed?
+
+Per viewer, per domain, from held signed records only — there is no global
+number. The full model (a `1.0`-centred multiplier folding in the counterparty
+rating and pass/fail, a configurable taxonomy scope-inheritance so `java` trust
+can count toward `backend`, per-domain tolerance thresholds, multi-path
+aggregation, and a jobs-provided-vs-consumed balance term) is written up as
+**NIP-QW13** in the protocol repo, along with a table of what the current
+implementation does versus that spec. Score also gates *visibility* — whose
+client relays your referral, ranks you in an answer, or shows your bulletin
+listing — again per-viewer, never a protocol-level block on the record itself.
 
 ---
 
@@ -430,6 +478,21 @@ Search needs an index; an index needs a holder:
 
 `Rate × ko × km` are unbounded subjective multipliers; rate creep is inflation
 by another name. Recommend dropping the claim rather than defending it.
+
+### Q: How do `ko`/`km` apply when the performer is an AI model?
+
+The coefficients keep their roles, read against the machine instead of a
+person (`abstract.md`, "When a party actor is an AI model"):
+
+- **ko** (objective) — model parameter count, usable context window, and
+  agent-configuration quality (tools, scaffolding, retrieval, orchestration):
+  the "equipment and working conditions" of an AI performer.
+- **km** (subjective) — the model's cognition factor: prompt/spec adherence
+  and hallucination rate. Instruction drift and fabricated output discount it.
+
+Nothing else changes — both stay optional, both stay negotiated and
+counter-able, and the counterparty still countersigns the completion that
+carries the agreed `ko`/`km`.
 
 ### Q: Is this "mutual credit"?
 

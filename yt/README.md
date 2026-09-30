@@ -7,6 +7,7 @@ Yet Another XA (transactional) HA (High-availability) Cluster with Master-Master
 Performance analysis: [2PC](https://dbinvent.github.io/yaxaha-cluster-performance)
 Linear scalability possible: [CAP](/cap.md)
 DNS for service discovery: [DNS](dns.md).
+Questions in plain language, answered by PostgreSQL, DataFusion or ClickHouse: [LLM](llm.md).
 
 ### Exclusive key features:
 - Vanilla Postgres use - no changes in original Postgres codebase with access to all build-in features.

@@ -14,7 +14,7 @@ No forked engine, no dedicated master, no vendor lock &mdash; [dbinvent.com/clus
 - **MPP via Apache DataFusion** - analytics planned against the declared topology, reachable from server functions and cluster-synced tables
 
 Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 mix, at equal replication scope.
-[What replication actually costs](https://dbinvent.github.io/yaxaha-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md)
+[What replication actually costs](https://dbinvent.github.io/yaxaha-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md) &middot; [Asking in plain language](/yt/llm.md)
 
 
 ## Schema guard

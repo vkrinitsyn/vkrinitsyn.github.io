@@ -1,8 +1,8 @@
 # Peer-Verified Contribution Network
 
-*Time contributed to shared projects, signed by the people you worked with.*
+*Time contributed to shared projects, signed by the people you worked with and for.*
 
-Available soon at https://knownby.work/ - Skills confirmed by the people you worked with. 
+Available soon at https://knownby.work/ - Skills confirmed by the people you worked with and for. 
 Found through friends of friends.
 
 ## Overview
@@ -46,6 +46,23 @@ Where:
   history
 
 `ko` and `km` may be omitted to simplify negotiation.
+
+**When a party actor is an AI model.** If the performer (or the client) on a
+contract is an AI agent rather than a person, `ko` and `km` keep their roles
+but are read against the machine:
+
+- **ko** reflects the model's *capability envelope* — parameter count, usable
+  context window, and the quality of the agent configuration around it (tools,
+  scaffolding, retrieval, orchestration). This is the "equipment and working
+  conditions" of an AI performer.
+- **km** reflects the model's *cognitive reliability* — how faithfully it
+  follows the prompt and the agreed spec, and how prone it is to hallucination.
+  Instruction drift and fabricated output discount `km` the way poor motivation
+  or sloppy work would for a person.
+
+Both stay optional and stay subjective multipliers set in negotiation and open
+to counter; the completion is still countersigned by the counterparty, who is
+affirming the `ko`/`km` that were agreed.
 
 What each person holds is not "Quants" but their counterparties' **signed
 contribution records** — Alice's record, Bob's record — each comparable because
@@ -423,7 +440,7 @@ contract is proposing a job, covered below.
 ## Summary
 
 This is a **Peer-Verified Contribution Network**: time contributed to shared
-projects, signed by the people you worked with. It records counterparty-signed,
+projects, signed by the people you worked with and for. It records counterparty-signed,
 time-denominated contributions, derives a Web of Trust from completed work, and
 lets each participant price reliability locally from a public, socially
 regulated record — with no money, no tokens-as-currency, and no central
