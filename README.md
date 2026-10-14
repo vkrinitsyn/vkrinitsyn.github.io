@@ -1,25 +1,26 @@
 # [Articles](https://vkrinitsyn.github.io)
 
 
-## YaXaHa
+## YaXAHA
 [link](/yt#yaxaha)
-The cluster like in cloud, but better, and yours: vanilla PostgreSQL plus an extension.
-No forked engine, no dedicated master, no vendor lock &mdash; [dbinvent.com/cluster](https://dbinvent.com/cluster/)
-- **AI smart dispatcher on a local model** - ask in plain language with `yt_llm('...')` and get plain PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives ([how it works](/yt/llm.md))
-  - **Local model** - llama.cpp on your own hardware, a CPU is enough, no cloud service; the model sees only the catalog (tables, columns, keys, comments), never a row
-  - **Placement decides, not the model** - the model picks the tables, the node picks the engine from where they live: whole here, sharded over the nodes, or in ClickHouse
-  - **Never a partial number** - data this node does not hold whole is read where it is whole, or the question is refused with the reason
-  - **Checked before a row is read** - every statement is planned first and runs read-only; the DataFusion script is a fixed template, so the model writes SQL, never code
-- **Strong consistency on write, eventual on read** - always readable, and writes wait only for what correctness requires
-- **Virtual dynamic partitioning** - transaction boundaries are derived at runtime, so disjoint writes spread across nodes
-- **RAFT consensus, not a single entry point** - the coordinator arbitrates and assigns workers, it never becomes the bottleneck
-- **Synchronization as configuration** - per-table rules decide what is redundant, what is local, and how strong each commit has to be
-- **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
-- **Self-healing** - continuous placement verification, online partition migration, and recovery that repairs rather than reports
-- **MPP via Apache DataFusion** - analytics planned against the declared topology, reachable from server functions and cluster-synced tables
+**Every node accepts writes. On the Postgres you already run.**
+Vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
 
-Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 mix, at equal replication scope.
-[What replication actually costs](https://dbinvent.github.io/yaxaha-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md) &middot; [Asking in plain language](/yt/llm.md)
+Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yaxaha/blob/main/nightly/results.yaml)
+- **No data transfer** - your database becomes a cluster node where it already sits; nothing is dumped, copied or migrated
+- **No vendor lock** - remove the extension and you are back to a single plain PostgreSQL, with your data in place
+- **No code change** - same SQL, same drivers, same extensions; a plain `COMMIT` is a cluster commit, with no PgBouncer and no explicit completion call
+- **No dedicated master** - nothing to promote, so nothing to fail over; a RAFT-based coordinator arbitrates and assigns workers, and never becomes the bottleneck
+- **Writes spread across every node** - transaction boundaries are derived at runtime (virtual dynamic partitioning), so disjoint writes land on different nodes
+- **Synchronization as configuration** - per-table rules decide what is redundant, what is local, and how many nodes a commit waits for: `half`, `nodes>=N`, or asynchronous
+- **Resiliency in three layers** - two-phase commit on the way in; self-healing after the fact, which re-reads, votes on and repairs a divergent copy; and a row, table or node nobody can vouch for is *blocked* rather than guessed
+- **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
+- **MPP analytics** - Apache DataFusion planned against the declared topology, ClickHouse for columnar workloads; neither needs a copy of the data
+- **Asking in plain language** - `yt_llm('...')` on a local model returns PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives; the model sees the catalog, never a row ([how it works](/yt/llm.md))
+- **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) and schema migration ([Schema Guard](/sg1#schema-guard)) ship with the cluster
+
+Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more &mdash; it is there for the tables that need it, not the default.
+[What replication actually costs](https://dbinvent.github.io/yaxaha-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md) &middot; [Asking in plain language](/yt/llm.md) &middot; [All about YaXAHA](/yt/)
 
 
 ## Schema guard
