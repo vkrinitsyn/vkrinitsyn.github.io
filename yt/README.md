@@ -1,7 +1,7 @@
 # [Articles](https://vkrinitsyn.github.io)
 
 
-## [YaXAHA](/yt/)
+## [YaXaHa](https://github.com/dbinvent/dbinvent.github.io) the cluster
 **Every node accepts writes. On the Postgres you already run.**
 Yet Another XA (transactional) HA (high-availability) Cluster: vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
 
