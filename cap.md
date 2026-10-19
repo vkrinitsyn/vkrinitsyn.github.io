@@ -6,15 +6,15 @@
 
 ## Abstract
 
-The CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency, Availability, and Partition Tolerance. For two decades, this theorem has been treated as a hard ceiling — a reason to accept painful trade-offs. YT Cluster challenges that framing not by breaking the theorem, but by making the trade-off programmable, situational, and transparent to the application. This article explains how, and walks through a live demonstration.
+The CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency, Availability, and Partition Tolerance. For two decades, this theorem has been treated as a hard ceiling - a reason to accept painful trade-offs. YT Cluster challenges that framing not by breaking the theorem, but by making the trade-off programmable, situational, and transparent to the application. This article explains how, and walks through a live demonstration.
 
 ---
 
 ## 1. The Problem: Why CAP Still Hurts in 2026
 
-Cloud-native databases have taught us to accept their trade-offs. DynamoDB gives you availability and partition tolerance but eventual consistency by default. Google Spanner gives you consistency and availability but only inside Google's private WAN. CockroachDB, TiDB, and YugabyteDB give you CP systems with impressive engineering — but at the cost of complexity, cloud lock-in, or a licensing model that punishes growth.
+Cloud-native databases have taught us to accept their trade-offs. DynamoDB gives you availability and partition tolerance but eventual consistency by default. Google Spanner gives you consistency and availability but only inside Google's private WAN. CockroachDB, TiDB, and YugabyteDB give you CP systems with impressive engineering - but at the cost of complexity, cloud lock-in, or a licensing model that punishes growth.
 
-For organizations running on-premises or at the edge — manufacturing plants, hospitals, financial institutions, gaming backends, regional compliance environments — none of these options fit cleanly. You cannot run Spanner on-prem. You cannot afford CockroachDB's licensing at scale. You cannot accept Cassandra's eventual consistency for financial transactions.
+For organizations running on-premises or at the edge - manufacturing plants, hospitals, financial institutions, gaming backends, regional compliance environments - none of these options fit cleanly. You cannot run Spanner on-prem. You cannot afford CockroachDB's licensing at scale. You cannot accept Cassandra's eventual consistency for financial transactions.
 
 The real problem is not the CAP theorem itself. The problem is that existing systems force you to pick a **fixed point** on the CAP triangle at design time, and live with that choice forever. YT Cluster's answer is to make consistency level a **runtime, per-transaction decision**.
 
@@ -22,11 +22,11 @@ The real problem is not the CAP theorem itself. The problem is that existing sys
 
 ## 2. What YT Cluster Is
 
-**YT Cluster** is a distributed database system built on top of standard PostgreSQL. It is implemented in Rust and delivered as a PostgreSQL extension (`ytsetup`). It transforms any set of PostgreSQL instances into a peer-to-peer distributed cluster — with no dedicated master node, no centralized coordinator, and no single point of failure.
+**YT Cluster** is a distributed database system built on top of standard PostgreSQL. It is implemented in Rust and delivered as a PostgreSQL extension (`ytsetup`). It transforms any set of PostgreSQL instances into a peer-to-peer distributed cluster - with no dedicated master node, no centralized coordinator, and no single point of failure.
 
 Key facts:
 - Written in **Rust** for performance and memory safety
-- Runs as a **PostgreSQL extension** — no forked or patched Postgres required
+- Runs as a **PostgreSQL extension** - no forked or patched Postgres required
 - **Leaderless by default**: any node can accept writes
 - **Term-based consensus** with dynamic leader election per shard or transaction group
 - **No centralized entry point**: clients connect to any node
@@ -47,7 +47,7 @@ This is a fundamental departure from systems like Citus or Greenplum, where shar
 
 ### 3.2 RAFT-Based Transaction Coordinator
 
-Distributed transactions are coordinated using a **RAFT consensus variant** — but not in the traditional sense of a single RAFT group for the entire cluster. YT Cluster implements per-shard RAFT groups, so the transaction coordinator overhead scales horizontally with the number of shards. There is no global serialization bottleneck.
+Distributed transactions are coordinated using a **RAFT consensus variant** - but not in the traditional sense of a single RAFT group for the entire cluster. YT Cluster implements per-shard RAFT groups, so the transaction coordinator overhead scales horizontally with the number of shards. There is no global serialization bottleneck.
 
 When a node is elected leader for a given term, it logs:
 ```
@@ -57,7 +57,7 @@ Non-leader nodes record the current leader's address and port, routing write req
 
 ### 3.3 Programmable Synchronization Rules
 
-This is YT Cluster's most distinctive architectural feature. Rather than offering a single consistency model cluster-wide, it exposes **Programmable Synchronization Rules** — per-table or per-transaction policies that define:
+This is YT Cluster's most distinctive architectural feature. Rather than offering a single consistency model cluster-wide, it exposes **Programmable Synchronization Rules** - per-table or per-transaction policies that define:
 
 - How many replicas must acknowledge a write before it commits (write quorum)
 - Whether a read must be served from the leader replica or can be served from any replica (read consistency level)
@@ -80,7 +80,7 @@ This means a single cluster can simultaneously be:
 - **AP** for session state (user_sessions table)
 - **Region-consistent** for compliance data (gdpr_data)
 
-The CAP trade-off is no longer a cluster property — it becomes a **data classification problem**.
+The CAP trade-off is no longer a cluster property - it becomes a **data classification problem**.
 
 ### 3.4 Multi-Region and Edge Topology
 
@@ -131,11 +131,11 @@ YT Cluster's key differentiators:
 
 YT Cluster is part of a broader toolchain developed by Vladimir Krinitsyn and DBinvent:
 
-- **[rppd](https://github.com/vkrinitsyn/rppd)** — Rust + Python + PostgreSQL integration layer (4 stars). Enables Python UDFs inside PostgreSQL backed by Rust performance.
-- **[schema_guard](https://github.com/vkrinitsyn/schema_guard)** — YAML-driven PostgreSQL schema migration tool. Manages cluster-wide schema changes safely during rolling upgrades.
-- **[shim](https://github.com/vkrinitsyn/shim)** — Sliding Window Histogram for timeframe analysis. Used for query pattern monitoring that feeds the AI-assisted partitioning.
-- **[etcd](https://github.com/vkrinitsyn/etcd)** — Rust PoC of etcd v3 queue messaging. Informs the cluster coordination protocol design.
-- **[marg](https://github.com/vkrinitsyn/marg)** — Meta-config from application arguments. Used for cluster node configuration management.
+- **[rppd](https://github.com/vkrinitsyn/rppd)** - Rust + Python + PostgreSQL integration layer (4 stars). Enables Python UDFs inside PostgreSQL backed by Rust performance.
+- **[schema_guard](https://github.com/vkrinitsyn/schema_guard)** - YAML-driven PostgreSQL schema migration tool. Manages cluster-wide schema changes safely during rolling upgrades.
+- **[shim](https://github.com/vkrinitsyn/shim)** - Sliding Window Histogram for timeframe analysis. Used for query pattern monitoring that feeds the AI-assisted partitioning.
+- **[etcd](https://github.com/vkrinitsyn/etcd)** - Rust PoC of etcd v3 queue messaging. Informs the cluster coordination protocol design.
+- **[marg](https://github.com/vkrinitsyn/marg)** - Meta-config from application arguments. Used for cluster node configuration management.
 
 ---
 
@@ -148,7 +148,7 @@ YT Cluster is part of a broader toolchain developed by Vladimir Krinitsyn and DB
 - Integration test suite (3-node, parallel execution via `cargo make`)
 - Docker-based isolated test environment
 
-**2025–2026 Roadmap:**
+**2025-2026 Roadmap:**
 - Web UI for cluster monitoring and shard visualization
 - Serverless node lifecycle (auto-scale down idle nodes)
 - Hierarchical clustering (clusters of clusters)
@@ -182,7 +182,7 @@ This section outlines the live demonstration structure. Total time: 60 minutes.
 
 **Talk track:** Open with the CAP triangle on a whiteboard or slide. Ask the audience: "Which two would you pick?" Walk through why each classic answer hurts.
 
-**Demo:** Show a traditional PostgreSQL streaming replication setup. Cause a failover. Show the promotion gap — the window where the system is unavailable. Ask: "What happened to CAP here?"
+**Demo:** Show a traditional PostgreSQL streaming replication setup. Cause a failover. Show the promotion gap - the window where the system is unavailable. Ask: "What happened to CAP here?"
 
 ### 8.3 Segment 2: YT Cluster Startup (10 min)
 
@@ -217,7 +217,7 @@ COMMIT;
 
 -- Immediately on node 3 (different terminal)
 SELECT * FROM accounts WHERE id = 1;
--- Should return 1000 — synchronous replication
+-- Should return 1000 - synchronous replication
 ```
 
 **Demo: Eventual consistency write**
@@ -228,7 +228,7 @@ SYNCHRONIZE TABLE user_sessions WITH QUORUM = ONE;
 -- Write on node 1
 INSERT INTO user_sessions (token, uid) VALUES ('abc', 42);
 
--- Read immediately on node 3 — may or may not be there yet
+-- Read immediately on node 3 - may or may not be there yet
 SELECT * FROM user_sessions WHERE token = 'abc';
 ```
 
@@ -252,7 +252,7 @@ Term: 2, for 6sec., Leader  # new leader elected
 NID=3 ./start_node.sh
 ```
 
-Show it catching up — no manual intervention, no data migration.
+Show it catching up - no manual intervention, no data migration.
 
 **Demo: Network partition (advanced)**  
 Use `iptables` or Docker network rules to split nodes 1+2 from node 3. Show the 50/50 behavior under different quorum policies.
@@ -284,11 +284,11 @@ Suggested questions to prompt:
 
 ## 9. Key Takeaways
 
-1. **CAP is not a binary choice** — it is a spectrum, and the right point on that spectrum depends on the data, not the system.
-2. **YT Cluster makes CAP trade-offs programmable** — consistency level is a per-table, per-transaction policy.
-3. **PostgreSQL-native** — no new query language, no new wire protocol, no new ops skill set required.
-4. **On-premises first** — designed for environments where cloud-native distributed databases are not an option.
-5. **Rust-powered reliability** — the coordination layer is memory-safe, high-performance, and production-grade.
+1. **CAP is not a binary choice** - it is a spectrum, and the right point on that spectrum depends on the data, not the system.
+2. **YT Cluster makes CAP trade-offs programmable** - consistency level is a per-table, per-transaction policy.
+3. **PostgreSQL-native** - no new query language, no new wire protocol, no new ops skill set required.
+4. **On-premises first** - designed for environments where cloud-native distributed databases are not an option.
+5. **Rust-powered reliability** - the coordination layer is memory-safe, high-performance, and production-grade.
 
 ---
 
@@ -302,4 +302,4 @@ Suggested questions to prompt:
 
 ---
 
-*DBinvent — Making distributed databases accessible to organizations that cannot move to the cloud.*
+*DBinvent - Making distributed databases accessible to organizations that cannot move to the cloud.*

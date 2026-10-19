@@ -4,9 +4,9 @@
 ## YT Cluster
 [link](/yt#yt-cluster)
 **Every node accepts writes. On the Postgres you already run.**
-Vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
+Vanilla PostgreSQL plus an extension and a server process - no forked engine, no proxy in front, no managed-cloud lock-in - [dbinvent.com](https://dbinvent.com/)
 
-Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
+Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
 - **No data transfer** - your database becomes a cluster node where it already sits; nothing is dumped, copied or migrated
 - **No vendor lock** - remove the extension and you are back to a single plain PostgreSQL, with your data in place
 - **No code change** - same SQL, same drivers, same extensions; a plain `COMMIT` is a cluster commit, with no PgBouncer and no explicit completion call
@@ -19,9 +19,9 @@ Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.c
 - **Asking in plain language** - `yt_llm('...')` on a local model returns PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives; the model sees the catalog, never a row ([how it works](/yt/llm.md))
 - **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) and schema migration ([Schema Guard](/sg1#schema-guard)) ship with the cluster
 
-From 30 years of personal IT experience into **[30 pillars of the solution](/yt/pillars.md)** &mdash; what it solves, one line each.
+From 30 years of personal IT experience into **[30 pillars of the solution](/yt/pillars.md)** - what it solves, one line each.
 
-Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more &mdash; it is there for the tables that need it, not the default.
+Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more - it is there for the tables that need it, not the default.
 [What replication actually costs](https://dbinvent.github.io/yt-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md) &middot; [Asking in plain language](/yt/llm.md) &middot; [All about YT Cluster](/yt/)
 
 
@@ -61,7 +61,7 @@ Etcd server PoC for messaging queue
 ##  Decentralized Skills Exchange and Mutual Credit Network
 [link](/qw/abstract.md#decentralized-skills-exchange-and-mutual-credit-network)
 A search-aware framework for discovering and appreciating developers across open source,
-startup, and IT projects — without requiring money to change hands.
+startup, and IT projects - without requiring money to change hands.
 Participants find each other through verified skill reputation, commit to work via
 signed contracts, and compensate contributions with personal credit tokens denominated
 in time.

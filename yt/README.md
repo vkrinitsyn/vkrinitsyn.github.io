@@ -3,9 +3,9 @@
 
 ## [YT Cluster](https://github.com/dbinvent/dbinvent.github.io)
 **Every node accepts writes. On the Postgres you already run.**
-YT Cluster: vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
+YT Cluster: vanilla PostgreSQL plus an extension and a server process - no forked engine, no proxy in front, no managed-cloud lock-in - [dbinvent.com](https://dbinvent.com/)
 
-Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
+Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
 - **No data transfer** - your database becomes a cluster node where it already sits; nothing is dumped, copied or migrated
 - **No vendor lock** - remove the extension and you are back to a single plain PostgreSQL, with your data in place
 - **No code change** - same SQL, same drivers, same extensions; a plain `COMMIT` is a cluster commit, with no PgBouncer and no explicit completion call
@@ -19,7 +19,7 @@ Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.c
 - **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) and schema migration ([Schema Guard](/sg1#schema-guard)) ship with the cluster
 - **C and Rust** - the extension in C, the server and tools in Rust
 
-Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more &mdash; it is there for the tables that need it, not the default.
+Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more - it is there for the tables that need it, not the default.
 
 ### Articles
 - From 30 years of personal IT experience into 30 pillars of the solution: [30 pillars](pillars.md)

@@ -1,4 +1,4 @@
-# QW Design Review — FAQ
+# QW Design Review - FAQ
 
 Consolidated from a review of `qw/abstract.md` (Decentralized Skills Exchange
 and Mutual Credit Network).
@@ -14,11 +14,11 @@ mechanics, and legal framing.
 A chain provides global ordering, consensus, and token transfer. None are
 required here:
 
-- Ordering is unnecessary — bilateral signatures make omission provable by
+- Ordering is unnecessary - bilateral signatures make omission provable by
   production (see §3).
-- Consensus is unnecessary — the design already accepts detection over
+- Consensus is unnecessary - the design already accepts detection over
   prevention.
-- Token transfer is unnecessary — the unit is time, not a tradeable asset.
+- Token transfer is unnecessary - the unit is time, not a tradeable asset.
 
 Costs a chain would impose: mandatory gas token, App Store crypto review
 exposure, seed-phrase onboarding, and immutability that conflicts with deletion
@@ -30,7 +30,7 @@ Ranked, though all are dispreferred:
 
 | Platform | Note |
 |---|---|
-| NEAR | Best of category — meta-transactions (no user gas), passkey onboarding, human-readable accounts |
+| NEAR | Best of category - meta-transactions (no user gas), passkey onboarding, human-readable accounts |
 | Solana | Cheapest writes, real mobile stack; aggressively token-centric |
 | Cosmos SDK app-chain | Could encode contract lifecycle directly; requires running a validator set |
 | Algorand / Hedera | Cheap and enterprise-legible; centralized governance, no gain over signed events |
@@ -45,7 +45,7 @@ Ranked, though all are dispreferred:
 | Storage / transport | Nostr relays (ATProto as migration target) |
 | Discovery | Relay lists + BitTorrent mainline DHT |
 | Mailbox | Encrypted envelopes on own relay |
-| Mobile | Tauri v2 — Android, iOS, web from one codebase |
+| Mobile | Tauri v2 - Android, iOS, web from one codebase |
 | Signing | External signer app (Amber pattern) |
 | Backup | Personal server replica + friend-hosted chunks |
 
@@ -53,7 +53,7 @@ Ranked, though all are dispreferred:
 
 Nostr is cheapest to operate solo, has no central registry dependency, treats
 the key as the identity, and gives "all records referencing A" natively via tag
-filters. Its weaknesses — unenforced schema, advisory deletion — are manageable
+filters. Its weaknesses - unenforced schema, advisory deletion - are manageable
 when you and your users operate the relays carrying your custom event kinds.
 
 ATProto is the migration target if enforced schemas or a real search index
@@ -77,7 +77,7 @@ becomes non-negotiable.
 **No fork. Yes to own always-on node service.**
 
 Forking core means inheriting maintenance of a distributed-systems codebase and
-losing upstream fixes — not viable solo. Volla Cloud Services can't be ported;
+losing upstream fixes - not viable solo. Volla Cloud Services can't be ported;
 it's an Android system service requiring VollaOS.
 
 The equivalent function assembles from stock parts: a conductor or relay on a
@@ -92,15 +92,15 @@ personal server, thin phone client over WSS, own push relay.
 With relays providing store-and-forward, the phone is a thin signing client:
 hold a key, sign payloads, sync on wake. That's the Signal model.
 
-Holochain reached the same conclusion independently — mobile nodes run in
+Holochain reached the same conclusion independently - mobile nodes run in
 "zero-arc" configuration and hold no DHT portion, explicitly to save battery and
 meet app store requirements.
 
 ### Q: What does thin-client mode unlock?
 
-- iOS stops being blocked — no WASM execution, no Wasmer/JIT problem, no App
+- iOS stops being blocked - no WASM execution, no Wasmer/JIT problem, no App
   Store 2.5.2 exposure
-- Mobile web app becomes viable — browsers can sign and talk to a node over WSS
+- Mobile web app becomes viable - browsers can sign and talk to a node over WSS
 - No VollaOS dependency for v1
 - Battery becomes a non-issue
 
@@ -108,7 +108,7 @@ meet app store requirements.
 
 **Yes, with keys outside the browser.**
 
-Browser storage is the wrong place for an identity key — XSS-exposed, and Safari
+Browser storage is the wrong place for an identity key - XSS-exposed, and Safari
 evicts data after roughly a week of non-use, which would mean silent permanent
 identity loss.
 
@@ -118,7 +118,7 @@ Web app handles discovery, job board, public profiles, drafting.
 ### Q: What about Holo hosting for browser access?
 
 **Not recommended.** Chaperone derives keys in-browser from username and
-password, so hosts can't forge signatures — but:
+password, so hosts can't forge signatures - but:
 
 - Key derivation requires a salt from a Holo-hosted registration service. Down
   means nobody logs in; wrong salt means a different identity.
@@ -130,11 +130,11 @@ password, so hosts can't forge signatures — but:
 
 | Issue | Severity |
 |---|---|
-| Device-key model is load-bearing, not optional | **High** — same key on two devices forks a chain |
-| Someone must still be a real DHT/relay peer | Medium — personal + friend servers |
-| Node availability = your availability | Medium — register with 2–3 relays |
-| Push routes through FCM/APNs | Low — payload encrypted, metadata visible |
-| Key custody on device | Medium — hardware keystore + social recovery |
+| Device-key model is load-bearing, not optional | **High** - same key on two devices forks a chain |
+| Someone must still be a real DHT/relay peer | Medium - personal + friend servers |
+| Node availability = your availability | Medium - register with 2-3 relays |
+| Push routes through FCM/APNs | Low - payload encrypted, metadata visible |
+| Key custody on device | Medium - hardware keystore + social recovery |
 
 ### Q: What is the App Store risk?
 
@@ -158,11 +158,11 @@ provable by production, not by gap analysis.
 | Dual indexing | Every contract published independently under both pubkeys |
 | Union query | Evaluation asks "all records referencing A", never A's self-report |
 | Publication window T | Hours to a day, measured **from the counterparty's signature timestamp**, not from first publication |
-| Automatic verification | Client checks at offer time and shows a plain signal — manual verification doesn't happen |
+| Automatic verification | Client checks at offer time and shows a plain signal - manual verification doesn't happen |
 
 ### Q: What is the actual attack to design against?
 
-**Not chain-forking** — it's expensive, provable, and permanent. Since multiple
+**Not chain-forking** - it's expensive, provable, and permanent. Since multiple
 accounts and pseudonymity are permitted, the cheap attack is **abandoning the
 identity and starting fresh**.
 
@@ -171,7 +171,7 @@ making good history valuable and slow to accumulate.
 
 - New account = unknown-risk, not neutral
 - Limits scale with history depth and counterparty diversity, not score
-- Path-to-you through the WoT matters more than any number — paths can't be
+- Path-to-you through the WoT matters more than any number - paths can't be
   forged by a fresh key
 
 ### Q: Is this a ledger at all?
@@ -185,13 +185,13 @@ wallets, and SD-JWT/BBS+ selective disclosure natively.
 The account survives the key. A **person record amendment** publishes a
 replacement as a continuation of the same account and revokes the prior key from
 a stated timestamp. Reputation attaches to the account's history, not to the key
-material, so nothing accumulated is lost — which is what separates this from the
+material, so nothing accumulated is lost - which is what separates this from the
 abandonment attack above, where the history is what the attacker is discarding.
 
 Authorisation is social, matching recovery everywhere else in the design: a
 quorum of the account's trusted contacts countersigns, confirming over
 independent channels. That threshold is what makes a stolen key insufficient on
-its own — an attacker holding it still has to convince the account's contacts,
+its own - an attacker holding it still has to convince the account's contacts,
 and the legitimate holder can raise a competing amendment. Quorum size and
 membership are the account holder's own configuration, set in advance.
 
@@ -200,7 +200,7 @@ Two properties to hold onto:
 | Property | Why |
 |---|---|
 | Revocation is **not** retroactive | Signatures before the timestamp stay valid; otherwise one lost phone evaporates every past contract |
-| A new signature under a revoked key is an **alert**, not a rejection | It is the strongest available evidence that a key is in hostile hands — surface it, don't silently drop the record |
+| A new signature under a revoked key is an **alert**, not a rejection | It is the strongest available evidence that a key is in hostile hands - surface it, don't silently drop the record |
 
 Routine device changes never reach this path: under the controller-DID model
 (§1), device keys are added and removed beneath the controller. Amendment is for
@@ -231,7 +231,7 @@ counts, timing, and burst patterns.
 
 | Scheme | Trade-off |
 |---|---|
-| Per-pair rotating tags — `HMAC(shared_secret, epoch)` | Cheap; relay can still cluster polled tags |
+| Per-pair rotating tags - `HMAC(shared_secret, epoch)` | Cheap; relay can still cluster polled tags |
 | Prefix bucketing (truncate to k bits) | Tunable anonymity set vs bandwidth |
 | **Trial decryption, no tag** | Perfect privacy; **practical here** because DHTs are scoped per community |
 
@@ -244,7 +244,7 @@ buckets, sender identity inside the plaintext.
 tokens to contacts; relay verifies validity without learning which recipient
 issued or which contact spent. Plus per-tag quotas, hard TTL (~72h), size caps.
 
-Prices naturally in Quants — relays earn for storage served, spam costs
+Prices naturally in Quants - relays earn for storage served, spam costs
 work-backed credit.
 
 ### Q: Does encrypted-mailbox delivery cover query routing?
@@ -259,7 +259,7 @@ other.
 
 ### Q: Does the anonymity mixer break Sybil resistance?
 
-**It would — so there is no mixer. Resolved.**
+**It would - so there is no mixer. Resolved.**
 
 The cascade block traverses signature chains, and a mixer would exist only to
 sever exactly those chains. A bot farm behind a mixer is unblockable short of
@@ -269,39 +269,39 @@ reputation signature chain.
 
 Without a mixer, Sybil resistance holds by construction. Every account has to be
 signed into the web of trust by someone, so behind any bot farm sits a limited
-number of real signing accounts. Blocking those accounts — and sharing the proof
-of contamination so others cascade the same block — takes down the entire farm
+number of real signing accounts. Blocking those accounts - and sharing the proof
+of contamination so others cascade the same block - takes down the entire farm
 at its root.
 
 Holding multiple accounts stays fine and does not reopen the hole: each account
 maintains its reputation independently, and one with no real signers behind it
-carries none. The protocol never requires a real name — only real,
+carries none. The protocol never requires a real name - only real,
 counterparty-signed reputation.
 
 
 ### Q: Can a bot-farm operator just pay themselves a huge balance?
 
-**Worked example** — Joe spins up a bot farm: a million bot accounts,
+**Worked example** - Joe spins up a bot farm: a million bot accounts,
 `Jo1`...`Jo1M`, each signed into Joe's own contact graph. The bots "accept"
 1B (aggregate) units of work credited to Joe.
 
 **Does that make Joe's balance 1B?** Yes and no.
 
 - **Yes, mechanically**: `net_position` is a pure derived query over signed
-  records — a million bots each countersigning a completion in Joe's favor
+  records - a million bots each countersigning a completion in Joe's favor
   produces exactly the balance the math says it does. The bots now
   collectively owe Joe 1B, and Joe can "collect" by asking them for work
-  back — the ledger has no way to know those million signers aren't
+  back - the ledger has no way to know those million signers aren't
   independent.
 - **No, functionally**: that balance is only redeemable *inside the farm*.
   To call in a favor from anyone else, that person has to recognize the
-  bots' reputation — and reputation is never global, always per-viewer,
+  bots' reputation - and reputation is never global, always per-viewer,
   built from *someone else's* independently-verified signature on
   completed work. The "no global score" rule cuts both ways: it also means
   no self-issued score can borrow trust from outside.
 
 **So could Joe build that outside reputation for real?** Yes, in
-principle — put the bots to work on real jobs for real, independent
+principle - put the bots to work on real jobs for real, independent
 counterparties (e.g. an AI compute farm actually delivering work someone
 else signs off on). At that point they're not a Sybil attack any more,
 they're a large legitimate operator, and a balance earned that way is real
@@ -311,7 +311,7 @@ by the same definition.
 farm's fake internal reputation against a real outside party is the one
 that gets flagged. Flagging a single signer inside a fully-interconnected
 million-bot graph cascades to every account behind it in one shot (the
-cascade block, above) — the farm's own interconnectedness, the thing that
+cascade block, above) - the farm's own interconnectedness, the thing that
 let it fake a balance cheaply, is exactly what makes it collapse entirely
 the moment one edge of it touches the real world.
 
@@ -320,19 +320,19 @@ the moment one edge of it touches the real world.
 ** pricing is a pure market, and there is no mixer to break it.**
 
 Pricing isn't a hidden social score a mixer could obscure. Per abstract.md the
-worker asks the price — declared hours × rate — and the recipient approves it
+worker asks the price - declared hours × rate - and the recipient approves it
 before work starts. That is a pure market bargain, recorded in the signed
 contract.
 
 Reputation is the market's verdict on that bargain: if a worker asks more than
 the client feels they received for the price, the client's acceptance and rating
-reflect it, and the worker's reputation falls. Every input — the asked price and
-the counterparty's signature — is public and counterparty-signed, so the record
+reflect it, and the worker's reputation falls. Every input - the asked price and
+the counterparty's signature - is public and counterparty-signed, so the record
 prices the worker directly. With the mixer cut (above), nothing hides any of it.
 
 ### Q: How are disputes handled?
 
-Keep the record, attach annotations — never hide:
+Keep the record, attach annotations - never hide:
 
 | Annotation | Signed by | Effect |
 |---|---|---|
@@ -342,7 +342,7 @@ Keep the record, attach annotations — never hide:
 
 Design constraints:
 - Auditors drawn from the intersection of both parties' WoT, or accepted by both
-- Auditors stake reputation — the opinion attaches to their own record
+- Auditors stake reputation - the opinion attaches to their own record
 - Auditors paid in Quants
 - "Disputed, no audit" is a valid terminal state
 
@@ -357,7 +357,7 @@ limbo, and reduces the incentive to abandon an identity.
 | Counteroffer (repeatable) | Either party | No |
 | Accept | Worker | No |
 | Completion / acceptance | Each separately | No |
-| Credit issuance | Both | Yes — countersign |
+| Credit issuance | Both | Yes - countersign |
 
 Only the last step needs atomicity. Everything prior tolerates one party being
 offline, which is the mobile reality.
@@ -369,7 +369,7 @@ offer it references and hands the proposal back, so either party may counter
 repeatedly; only a signed Accept ends the exchange.
 
 Each version is signed by whoever proposed it, which makes the negotiation itself
-part of the record — useful later when an auditor needs to know what was actually
+part of the record - useful later when an auditor needs to know what was actually
 agreed. No version prior to the accepted one carries any obligation, and a
 negotiation that ends without an Accept leaves nothing in either party's history.
 
@@ -381,7 +381,7 @@ recipient's own weights, and a **position limit** on Quants given versus taken
 with that counterparty.
 
 Both are per-participant configuration, never protocol-mandated, and a declined
-request returns no reason — thresholds stay private precisely so they cannot be
+request returns no reason - thresholds stay private precisely so they cannot be
 probed and tuned around.
 
 This is the same market-pricing mechanism as record acceptance, moved earlier in
@@ -392,15 +392,15 @@ per-contact relay policies in §6.
 
 ### Q: How is the "minimum reputation" score actually computed?
 
-Per viewer, per domain, from held signed records only — there is no global
+Per viewer, per domain, from held signed records only - there is no global
 number. The full model (a `1.0`-centred multiplier folding in the counterparty
 rating and pass/fail, a configurable taxonomy scope-inheritance so `java` trust
 can count toward `backend`, per-domain tolerance thresholds, multi-path
 aggregation, and a jobs-provided-vs-consumed balance term) is written up as
 **NIP-QW13** in the protocol repo, along with a table of what the current
-implementation does versus that spec. Score also gates *visibility* — whose
+implementation does versus that spec. Score also gates *visibility* - whose
 client relays your referral, ranks you in an answer, or shows your bulletin
-listing — again per-viewer, never a protocol-level block on the record itself.
+listing - again per-viewer, never a protocol-level block on the record itself.
 
 ---
 
@@ -410,18 +410,18 @@ listing — again per-viewer, never a protocol-level block on the record itself.
 
 Three-layer split:
 
-1. **Bootstrap** — DNS, torrent DHT, public boards (Craigslist, HN, Telegram).
+1. **Bootstrap** - DNS, torrent DHT, public boards (Craigslist, HN, Telegram).
    Explicitly permitted; "no internet" means no hosted data store, not no
    discovery.
-2. **Referral queries** — TTL-bounded propagation through contacts with
+2. **Referral queries** - TTL-bounded propagation through contacts with
    per-contact relay policies.
-3. **Public gateway** — indexable signed job postings with stable URLs.
+3. **Public gateway** - indexable signed job postings with stable URLs.
 
 ### Q: Is TTL-bounded referral propagation better than graph traversal?
 
-**Yes — significantly.** It collapses three components into one:
+**Yes - significantly.** It collapses three components into one:
 
-- Discovery becomes routing, not search — no index to build, host, or shard
+- Discovery becomes routing, not search - no index to build, host, or shard
 - Skill sharing becomes each edge's cache of direct contacts' tags
 - Trust is carried by the path itself
 
@@ -429,10 +429,10 @@ It also matches how people actually find work.
 
 ### Q: Does flooding scale?
 
-**No — use greedy routing.** 50 contacts × 3 hops is up to 125,000 messages per
+**No - use greedy routing.** 50 contacts × 3 hops is up to 125,000 messages per
 question (the Gnutella failure). Since each node already caches contacts' skill
 tags, relays forward selectively toward tag-similar contacts. Small-world
-routing reaches a match in ~logarithmic hops with fanout 2–3 instead of 50 —
+routing reaches a match in ~logarithmic hops with fanout 2-3 instead of 50 -
 same reach, ~1% of traffic.
 
 **This is the single most important change to the referral design.**
@@ -443,8 +443,8 @@ Per-contact, not global:
 
 | Setting | Range | Meaning |
 |---|---|---|
-| `relay_depth` | 0–3 | How far I pass queries onward |
-| `accept_depth` | 0–3 | How far away a requester may be |
+| `relay_depth` | 0-3 | How far I pass queries onward |
+| `accept_depth` | 0-3 | How far away a requester may be |
 | `categories` | tag set | Only relay/answer in these areas |
 | `rate_limit` | N/day | Ceiling per contact |
 | `share_tags` | bool | May this contact cache my skill tags |
@@ -454,11 +454,11 @@ Per-contact, not global:
 Middle path: reveal identity only to hop 1; each relay attaches its own vouch as
 the query moves. Receiver sees "someone my contact Anna trusts, two hops out,
 asking about Rust work." Responses return along the path. Dedup by pubkey but
-keep path count — multiple independent paths is stronger signal.
+keep path count - multiple independent paths is stronger signal.
 
 ### Q: Can relaying be incentivized?
 
-Yes — charge a fractional Quant for relayed queries, or credit relays whose
+Yes - charge a fractional Quant for relayed queries, or credit relays whose
 match becomes a signed contract. Referral fees are normal in labor markets, and
 it prices out spam.
 
@@ -466,7 +466,7 @@ it prices out spam.
 
 Search needs an index; an index needs a holder:
 
-- Coordination server holds **Shard per community/guild** — most defensible, but yields federated search,
+- Coordination server holds **Shard per community/guild** - most defensible, but yields federated search,
   not a global talent search, but regional
 - Every node holds an index of the contracts he knows and able to forward request to another node or host
 
@@ -484,29 +484,29 @@ by another name. Recommend dropping the claim rather than defending it.
 The coefficients keep their roles, read against the machine instead of a
 person (`abstract.md`, "When a party actor is an AI model"):
 
-- **ko** (objective) — model parameter count, usable context window, and
+- **ko** (objective) - model parameter count, usable context window, and
   agent-configuration quality (tools, scaffolding, retrieval, orchestration):
   the "equipment and working conditions" of an AI performer.
-- **km** (subjective) — the model's cognition factor: prompt/spec adherence
+- **km** (subjective) - the model's cognition factor: prompt/spec adherence
   and hallucination rate. Instruction drift and fabricated output discount it.
 
-Nothing else changes — both stay optional, both stay negotiated and
+Nothing else changes - both stay optional, both stay negotiated and
 counter-able, and the counterparty still countersigns the completion that
 carries the agreed `ko`/`km`.
 
 ### Q: Is this "mutual credit"?
 
 **Not in the legal sense.** If credits create no obligation, they're a
-reciprocity signal, not credit. That's a strength — no debt instrument, no money
-transmission, no securities question — but the title oversells. Consider
+reciprocity signal, not credit. That's a strength - no debt instrument, no money
+transmission, no securities question - but the title oversells. Consider
 "reciprocity ledger" or "skill attestation network."
 
 Cost: an unenforceable IOU has weak pull. Works in communities with repeated
-interaction — another argument for launching inside one project ecosystem.
+interaction - another argument for launching inside one project ecosystem.
 
 ### Q: Why avoid "Web3" and on-chain framing?
 
-2021–22 was peak on-chain reputation — soulbound tokens, decentralized identity,
+2021-22 was peak on-chain reputation - soulbound tokens, decentralized identity,
 on-chain badges. Nearly all stalled: credentials weren't demanded by employers,
 tokens attracted speculators, compliance overhead crushed teams.
 
@@ -519,11 +519,11 @@ evaluating the referral mechanic.
 | Dimension | 2021 on-chain reputation | QW |
 |---|---|---|
 | Who attests | Platform, DAO, or self | The counterparty |
-| Attester's stake | None — minting is free | Their own record |
+| Attester's stake | None - minting is free | Their own record |
 | When created | Separate act of issuance | Byproduct of job lifecycle |
 | Unit | Badge, score, balance | 15 minutes at minimum qualification |
 | Score shape | One global number | N subjective readings |
-| What's evaluated | The number | The path — who vouched, how far |
+| What's evaluated | The number | The path - who vouched, how far |
 | Token required | Yes | No |
 | Privacy | Public forever | Selective disclosure |
 | Deletion | Impossible | Possible on relay/PDS |
@@ -532,13 +532,13 @@ evaluating the referral mechanic.
 
 | Failure mode | Avoided? |
 |---|---|
-| Costless attestation | **Yes** — requires a real counterparty |
+| Costless attestation | **Yes** - requires a real counterparty |
 | Token overwhelmed product | **Yes**, if Shadow Quant is cut |
-| Wallet/gas/seed onboarding | **Yes** — external signer |
-| Public forever | **Yes** — field-level encryption |
-| Fake global objectivity | **Yes** — no global score exists |
-| No verifier demand | **Partly** — consumed inside the network |
-| Cold start | **No — worse.** Badges could be backfilled; attestations can't |
+| Wallet/gas/seed onboarding | **Yes** - external signer |
+| Public forever | **Yes** - field-level encryption |
+| Fake global objectivity | **Yes** - no global score exists |
+| No verifier demand | **Partly** - consumed inside the network |
+| Cold start | **No - worse.** Badges could be backfilled; attestations can't |
 
 ### Q: What are the drawbacks of this approach?
 
@@ -553,9 +553,9 @@ evaluating the referral mechanic.
 
 ### Q: Is counterparty participation an adoption tax?
 
-**Largely no — earlier objection withdrawn.** Both parties are already in
+**Largely no - earlier objection withdrawn.** Both parties are already in
 negotiation, often face-to-face or synchronously online. Each contract onboards
-one person through an existing relationship — the Venmo/WhatsApp pattern.
+one person through an existing relationship - the Venmo/WhatsApp pattern.
 
 What remains is **signature at completion**: the counterparty's benefit is
 diffuse while the worker's is immediate. Threaded comments with review scores
@@ -568,10 +568,10 @@ place to raise quality concerns rather than silently withholding.
 
 ### Q: Does the co-authorship framing avoid barter classification?
 
-**Holds under two conditions — Risk, needs professional review.**
+**Holds under two conditions - Risk, needs professional review.**
 
 Works when:
-1. Work is on a **declared open-source project** — output is public and
+1. Work is on a **declared open-source project** - output is public and
    non-appropriable
 2. **No project is controlled by the counterparty** in a way that privatizes the
    benefit
@@ -588,14 +588,14 @@ Fails for direct bilateral work-for-work with a contemporaneous record.
 | Feature | Effect |
 |---|---|
 | Shadow Quant (ERC-20 mirror, fiat off-ramp) | **Creates a market price. Ends the argument.** |
-| "Private with no profit" projects | Weakest clause — "no profit yet" isn't "no value" |
+| "Private with no profit" projects | Weakest clause - "no profit yet" isn't "no value" |
 | "Removes the barter classification" | Stated as settled; invites testing |
 
 ### Q: Recommended edits?
 
 - Replace "removes the barter classification" with the reasoning itself
 - Cut "private with no profit"; scope to declared open source only
-- State the boundary explicitly — activity beyond these conditions is the
+- State the boundary explicitly - activity beyond these conditions is the
   participants' own tax responsibility
 - Obtain a written opinion from a tax attorney before any data room
 
@@ -603,7 +603,7 @@ Fails for direct bilateral work-for-work with a contemporaneous record.
 
 Records are work history about identifiable people; EU and several US state laws
 grant deletion rights. Immutable public chains cannot comply. Nostr (advisory)
-and ATProto (real, at the PDS) can — document the reasoning that custom event
+and ATProto (real, at the PDS) can - document the reasoning that custom event
 kinds aren't mirrored by general-purpose relays.
 
 ### Q: What should be cut?
