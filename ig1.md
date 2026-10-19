@@ -23,7 +23,7 @@ Default configuration of Postgres server working with a single backend-UI and se
 ## Scene 3
 - Cluster become in action starting with YtCtl - Setup, control and monitor app, not required, but helpfil
 - duplicate data to 2nd node, and then 3rd node, while backend and clients already there
-- zoom or show each postgres node contains from: pg_bouncer, yaxaha, postgres, optional replica; zoom out
+- zoom or show each postgres node contains from: pg_bouncer, yt-cluster, postgres, optional replica; zoom out
 - show postgres a pure vanilla not changed geneue postgres code
 - postgres nodes talk to each other
 
@@ -42,11 +42,11 @@ feature: serverless and etcd based queue
 - continue from previous scene
 - extract piece of backends with lambda-python logo and move into nodes
 - zoom into nodes (no magnifier)
-- each node shown a postgres server, yaxaha agent and python lambda function and etcd   
+- each node shown a postgres server, yt-cluster agent and python lambda function and etcd   
 - pgbouncer becomes hidden to avoid over complicated detailed view
 - show connection between etcd nodes. check rppd/rppd.etcd.svg
-- place triangle with etcd closer to center with broad connection pipes than yaxaha. like etcd is more realtime than regular yaxaha agent. 
-but yaxaha is more data consistent because linked to db
+- place triangle with etcd closer to center with broad connection pipes than yt-cluster. like etcd is more realtime than regular yt-cluster agent. 
+but yt-cluster is more data consistent because linked to db
 
 ## Scene 7
 feature: az and sharding for resiliency
@@ -80,7 +80,7 @@ sample use-case: MMO gaming
 - continue from previous scene
 - zoom into outsider node 
 - morph table back to postgres
-- show postgres engine with yaxaha agent and lambda function and etcd
+- show postgres engine with yt-cluster agent and lambda function and etcd
 - show the postgres build-in into app and that postgres can run independently without cluster for development speedup
 - show the same postgres can be part of cluster and can be converted into cluster and become a global hierarchical cluster node with no data migration and no vendor lock
 

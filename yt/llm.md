@@ -1,8 +1,8 @@
-# Asking a YaXaHa cluster in plain language: one question, three engines
+# Asking a YT Cluster in plain language: one question, three engines
 
 *A test report, 2026-09-30*
 
-A [YaXaHa](/yt/) cluster, vanilla PostgreSQL plus an extension, can answer a
+A [YT Cluster](/yt/), vanilla PostgreSQL plus an extension, can answer a
 question written in plain language:
 
 ```sql
@@ -17,14 +17,14 @@ that each node holds only its own rows. It may live in ClickHouse, next to the
 PostgreSQL cluster. It may also be a table you want computed by DataFusion
 rather than PostgreSQL.
 
-This report describes a test of exactly that on three YaXaHa nodes and three
+This report describes a test of exactly that on three YT Cluster nodes and three
 ClickHouse nodes in docker. It covers ten questions asked on every node, and the
 bug the test found and that is now fixed. The final run was **101 checks, 101
 passed**.
 
 ## How a node answers a question
 
-`yt_llm` is a function of the YaXaHa extension. The work happens in ytserv, the
+`yt_llm` is a function of the YT Cluster extension. The work happens in ytserv, the
 node's cluster daemon, in five steps.
 
 1. **The node describes what it can read, as three lists.** Each table goes on
@@ -63,7 +63,7 @@ node's share of the rows.
 
 ### What shards change
 
-YaXaHa can shard a table over its nodes, and it has two kinds of shard.
+YT Cluster can shard a table over its nodes, and it has two kinds of shard.
 
 - **Pinned:** a column names the node that owns the row. A pinned table goes on
   the `df` list as "sharded". A question over it is answered from ClickHouse when
@@ -79,7 +79,7 @@ YaXaHa can shard a table over its nodes, and it has two kinds of shard.
 
 ```
             ┌─────────────── docker network ───────────────┐
-            │  yt1  yt2  yt3   YaXaHa nodes: PostgreSQL 18, │
+            │  yt1  yt2  yt3   YT Cluster: PostgreSQL 18,   │
             │                  ytserv, DataFusion 54        │
             │  ch1  ch2  ch3   ClickHouse 26.9: 3 shards,   │
             │                  Keeper on all three          │
@@ -89,13 +89,13 @@ YaXaHa can shard a table over its nodes, and it has two kinds of shard.
                           llama.cpp, three models, CPU only
 ```
 
-- **Everything is found by name, not address.** Each YaXaHa node shares a small
+- **Everything is found by name, not address.** Each YT Cluster node shares a small
   private network with its ClickHouse node, which answers to the name `ch` there.
   So one cluster-wide setting, `http://ch:8123`, makes every node read its own
   ClickHouse. The ClickHouse queries are then spread over the three shards.
 - **The configuration lives in the cluster's own config table.** That covers the
   node roster, the model service's address, and which tables DataFusion reads. It
-  also holds the ClickHouse cluster definition, which each YaXaHa node renders
+  also holds the ClickHouse cluster definition, which each YT Cluster node renders
   into the file its ClickHouse node reads. The client key for the model service
   and the ClickHouse password are stored encrypted with the node's app key, which
   is new for every run.
@@ -218,7 +218,7 @@ had taken it.
 **The fix** is a few lines in ytserv's router. A statement the node had written
 for ClickHouse now looks its tables up among ClickHouse's own tables, shadowed
 ones included, and runs there when ClickHouse has them all. It has a unit test,
-and it shipped in YaXaHa 0.16.7. The third run passed 101 of 101, and the fix is
+and it shipped in YT Cluster 0.16.7. The third run passed 101 of 101, and the fix is
 on our three-node lab cluster.
 
 ## Lessons
@@ -249,15 +249,15 @@ refused otherwise.
 
 ## Run it yourself
 
-The whole test is public: the [llm folder](https://github.com/DBinvent/yaxaha/tree/main/llm)
-of the YaXaHa test repository. Its
-[README](https://github.com/DBinvent/yaxaha/blob/main/llm/README.md) explains the
+The whole test is public: the [llm folder](https://github.com/DBinvent/yt-cluster-tests/tree/main/llm)
+of the YT Cluster test repository. Its
+[README](https://github.com/DBinvent/yt-cluster-tests/blob/main/llm/README.md) explains the
 setup, the model service included, and
-[results.md](https://github.com/DBinvent/yaxaha/blob/main/llm/results.md) is the
+[results.md](https://github.com/DBinvent/yt-cluster-tests/blob/main/llm/results.md) is the
 detailed record of this run.
 
 ```
-cp env.example .env     # the model service's client certificate, the YaXaHa package
+cp env.example .env     # the model service's client certificate, the YT Cluster package
 ./build.sh              # the node image
 ./up.sh                 # a new cluster: nodes, data, config, ClickHouse (~2 min)
 ./test.sh               # the questions on all three nodes (~12 min)

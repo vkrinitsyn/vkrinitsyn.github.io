@@ -1,4 +1,4 @@
-# Solving CAP: How YaXaHa Cluster Navigates the Impossible Triangle
+# Solving CAP: How YT Cluster Navigates the Impossible Triangle
 
 *Vladimir Krinitsyn*
 
@@ -6,7 +6,7 @@
 
 ## Abstract
 
-The CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency, Availability, and Partition Tolerance. For two decades, this theorem has been treated as a hard ceiling — a reason to accept painful trade-offs. YaXaHa Cluster challenges that framing not by breaking the theorem, but by making the trade-off programmable, situational, and transparent to the application. This article explains how, and walks through a live demonstration.
+The CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency, Availability, and Partition Tolerance. For two decades, this theorem has been treated as a hard ceiling — a reason to accept painful trade-offs. YT Cluster challenges that framing not by breaking the theorem, but by making the trade-off programmable, situational, and transparent to the application. This article explains how, and walks through a live demonstration.
 
 ---
 
@@ -16,13 +16,13 @@ Cloud-native databases have taught us to accept their trade-offs. DynamoDB gives
 
 For organizations running on-premises or at the edge — manufacturing plants, hospitals, financial institutions, gaming backends, regional compliance environments — none of these options fit cleanly. You cannot run Spanner on-prem. You cannot afford CockroachDB's licensing at scale. You cannot accept Cassandra's eventual consistency for financial transactions.
 
-The real problem is not the CAP theorem itself. The problem is that existing systems force you to pick a **fixed point** on the CAP triangle at design time, and live with that choice forever. YaXaHa Cluster's answer is to make consistency level a **runtime, per-transaction decision**.
+The real problem is not the CAP theorem itself. The problem is that existing systems force you to pick a **fixed point** on the CAP triangle at design time, and live with that choice forever. YT Cluster's answer is to make consistency level a **runtime, per-transaction decision**.
 
 ---
 
-## 2. What YaXaHa Cluster Is
+## 2. What YT Cluster Is
 
-**YaXaHa Cluster** is a distributed database system built on top of standard PostgreSQL. It is implemented in Rust and delivered as a PostgreSQL extension (`ytsetup`). It transforms any set of PostgreSQL instances into a peer-to-peer distributed cluster — with no dedicated master node, no centralized coordinator, and no single point of failure.
+**YT Cluster** is a distributed database system built on top of standard PostgreSQL. It is implemented in Rust and delivered as a PostgreSQL extension (`ytsetup`). It transforms any set of PostgreSQL instances into a peer-to-peer distributed cluster — with no dedicated master node, no centralized coordinator, and no single point of failure.
 
 Key facts:
 - Written in **Rust** for performance and memory safety
@@ -32,7 +32,7 @@ Key facts:
 - **No centralized entry point**: clients connect to any node
 - Supports PostgreSQL 13, 14, and newer
 
-Source: [github.com/DBinvent/yaxaha](https://github.com/DBinvent/yaxaha)  
+Source: [github.com/DBinvent/yt-cluster-tests](https://github.com/DBinvent/yt-cluster-tests)  
 Product page: [dbinvent.com/cluster](https://www.dbinvent.com/cluster/)
 
 ---
@@ -41,13 +41,13 @@ Product page: [dbinvent.com/cluster](https://www.dbinvent.com/cluster/)
 
 ### 3.1 Virtual Dynamic Partitioning (SSC Model)
 
-YaXaHa uses a **Super-Shard-Cell (SSC)** model for data partitioning. Unlike static consistent hashing (used by most distributed databases), SSC partitioning is dynamic: shards are reorganized at runtime based on load, access patterns, and node availability. An AI-assisted partitioning layer monitors query patterns and proposes rebalancing without downtime or data migration.
+YT Cluster uses a **Super-Shard-Cell (SSC)** model for data partitioning. Unlike static consistent hashing (used by most distributed databases), SSC partitioning is dynamic: shards are reorganized at runtime based on load, access patterns, and node availability. An AI-assisted partitioning layer monitors query patterns and proposes rebalancing without downtime or data migration.
 
 This is a fundamental departure from systems like Citus or Greenplum, where shard rebalancing requires explicit operator intervention and often temporary performance degradation.
 
 ### 3.2 RAFT-Based Transaction Coordinator
 
-Distributed transactions are coordinated using a **RAFT consensus variant** — but not in the traditional sense of a single RAFT group for the entire cluster. YaXaHa implements per-shard RAFT groups, so the transaction coordinator overhead scales horizontally with the number of shards. There is no global serialization bottleneck.
+Distributed transactions are coordinated using a **RAFT consensus variant** — but not in the traditional sense of a single RAFT group for the entire cluster. YT Cluster implements per-shard RAFT groups, so the transaction coordinator overhead scales horizontally with the number of shards. There is no global serialization bottleneck.
 
 When a node is elected leader for a given term, it logs:
 ```
@@ -57,7 +57,7 @@ Non-leader nodes record the current leader's address and port, routing write req
 
 ### 3.3 Programmable Synchronization Rules
 
-This is YaXaHa's most distinctive architectural feature. Rather than offering a single consistency model cluster-wide, it exposes **Programmable Synchronization Rules** — per-table or per-transaction policies that define:
+This is YT Cluster's most distinctive architectural feature. Rather than offering a single consistency model cluster-wide, it exposes **Programmable Synchronization Rules** — per-table or per-transaction policies that define:
 
 - How many replicas must acknowledge a write before it commits (write quorum)
 - Whether a read must be served from the leader replica or can be served from any replica (read consistency level)
@@ -94,9 +94,9 @@ This architecture directly addresses GDPR and data residency requirements: a tab
 
 ---
 
-## 4. How YaXaHa Navigates CAP
+## 4. How YT Cluster Navigates CAP
 
-| Scenario | Consistency | Availability | Partition Tolerance | YaXaHa behavior |
+| Scenario | Consistency | Availability | Partition Tolerance | YT Cluster behavior |
 |---|---|---|---|---|
 | Normal operation | Strong | Full | N/A | Synchronous replication, any node writable |
 | Node failure (minority) | Strong | Full | Yes | Remaining nodes form quorum, no downtime |
@@ -117,9 +117,9 @@ The crucial insight: **partition tolerance is always guaranteed** (you cannot op
 | **CockroachDB** | Serializable (CP) | Yes ($$) | No | Linear |
 | **YugabyteDB** | Tunable (CP default) | Yes | API-compatible | Linear |
 | **Spanner** | External consistency | No | No | Linear |
-| **YaXaHa** | **Programmable** | Yes | Extension | Linear |
+| **YT Cluster** | **Programmable** | Yes | Extension | Linear |
 
-YaXaHa's key differentiators:
+YT Cluster's key differentiators:
 1. **No coordinator bottleneck**: per-shard RAFT groups, not a single RAFT cluster
 2. **No data migration on rebalancing**: SSC model rebalances routing, not data
 3. **True PostgreSQL extension**: no forked binary, runs alongside any PG version
@@ -129,7 +129,7 @@ YaXaHa's key differentiators:
 
 ## 6. Ecosystem: Supporting Tools
 
-YaXaHa is part of a broader toolchain developed by Vladimir Krinitsyn and DBinvent:
+YT Cluster is part of a broader toolchain developed by Vladimir Krinitsyn and DBinvent:
 
 - **[rppd](https://github.com/vkrinitsyn/rppd)** — Rust + Python + PostgreSQL integration layer (4 stars). Enables Python UDFs inside PostgreSQL backed by Rust performance.
 - **[schema_guard](https://github.com/vkrinitsyn/schema_guard)** — YAML-driven PostgreSQL schema migration tool. Manages cluster-wide schema changes safely during rolling upgrades.
@@ -158,8 +158,8 @@ YaXaHa is part of a broader toolchain developed by Vladimir Krinitsyn and DBinve
 **Installation today (Debian/Ubuntu):**
 ```bash
 # Add DBinvent package repository
-# Install PostgreSQL + YaXaHa extension
-apt install yaxaha-cluster
+# Install PostgreSQL + YT Cluster extension
+apt install yt-cluster
 ytsetup  # enables the extension in PostgreSQL
 
 # Start a 3-node cluster for testing
@@ -184,7 +184,7 @@ This section outlines the live demonstration structure. Total time: 60 minutes.
 
 **Demo:** Show a traditional PostgreSQL streaming replication setup. Cause a failover. Show the promotion gap — the window where the system is unavailable. Ask: "What happened to CAP here?"
 
-### 8.3 Segment 2: YaXaHa Cluster Startup (10 min)
+### 8.3 Segment 2: YT Cluster Startup (10 min)
 
 **Demo:**
 ```bash
@@ -257,7 +257,7 @@ Show it catching up — no manual intervention, no data migration.
 **Demo: Network partition (advanced)**  
 Use `iptables` or Docker network rules to split nodes 1+2 from node 3. Show the 50/50 behavior under different quorum policies.
 
-**Talk track:** This is where CAP theorem bites traditional systems hard. With YaXaHa, you've already declared your preference per table. The cluster enforces your policy automatically.
+**Talk track:** This is where CAP theorem bites traditional systems hard. With YT Cluster, you've already declared your preference per table. The cluster enforces your policy automatically.
 
 ### 8.6 Segment 5: Schema Migration with schema_guard (5 min)
 
@@ -285,7 +285,7 @@ Suggested questions to prompt:
 ## 9. Key Takeaways
 
 1. **CAP is not a binary choice** — it is a spectrum, and the right point on that spectrum depends on the data, not the system.
-2. **YaXaHa makes CAP trade-offs programmable** — consistency level is a per-table, per-transaction policy.
+2. **YT Cluster makes CAP trade-offs programmable** — consistency level is a per-table, per-transaction policy.
 3. **PostgreSQL-native** — no new query language, no new wire protocol, no new ops skill set required.
 4. **On-premises first** — designed for environments where cloud-native distributed databases are not an option.
 5. **Rust-powered reliability** — the coordination layer is memory-safe, high-performance, and production-grade.
@@ -295,7 +295,7 @@ Suggested questions to prompt:
 ## Resources
 
 - Product: [dbinvent.com/cluster](https://www.dbinvent.com/cluster/)
-- Source: [github.com/DBinvent/yaxaha](https://github.com/DBinvent/yaxaha)
+- Source: [github.com/DBinvent/yt-cluster-tests](https://github.com/DBinvent/yt-cluster-tests)
 - Author's tools: [github.com/vkrinitsyn](https://github.com/vkrinitsyn)
 - Original article: [medium.com/@v.krinitsyn/solving-cap-1c8bf2081c23](https://medium.com/@v.krinitsyn/solving-cap-1c8bf2081c23)
 - Contact: v.krinitsyn@gmail.com

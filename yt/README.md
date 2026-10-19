@@ -1,11 +1,11 @@
 # [Articles](https://vkrinitsyn.github.io)
 
 
-## [YaXaHa](https://github.com/dbinvent/dbinvent.github.io) the cluster
+## [YT Cluster](https://github.com/dbinvent/dbinvent.github.io)
 **Every node accepts writes. On the Postgres you already run.**
-Yet Another XA (transactional) HA (high-availability) Cluster: vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
+YT Cluster: vanilla PostgreSQL plus an extension and a server process &mdash; no forked engine, no proxy in front, no managed-cloud lock-in &mdash; [dbinvent.com](https://dbinvent.com/)
 
-Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yaxaha/blob/main/nightly/results.yaml)
+Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
 - **No data transfer** - your database becomes a cluster node where it already sits; nothing is dumped, copied or migrated
 - **No vendor lock** - remove the extension and you are back to a single plain PostgreSQL, with your data in place
 - **No code change** - same SQL, same drivers, same extensions; a plain `COMMIT` is a cluster commit, with no PgBouncer and no explicit completion call
@@ -22,18 +22,19 @@ Released &mdash; tested and ready: [![nightly end-to-end](https://apt.dbinvent.c
 Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more &mdash; it is there for the tables that need it, not the default.
 
 ### Articles
-- What replication actually costs: [2PC](https://dbinvent.github.io/yaxaha-cluster-performance.html)
+- From 30 years of personal IT experience into 30 pillars of the solution: [30 pillars](pillars.md)
+- What replication actually costs: [2PC](https://dbinvent.github.io/yt-cluster-performance.html)
 - Software-defined topology, verified: [Where Rows Live](https://dbinvent.github.io/where-rows-live.html)
 - Linear scalability possible: [CAP](/cap.md)
 - DNS for service discovery: [DNS](dns.md)
 - Questions in plain language, answered by PostgreSQL, DataFusion or ClickHouse: [LLM](llm.md)
-- Resilience and membership under change, on three linked clusters: [RMC](https://github.com/DBinvent/yaxaha/tree/main/rmc) ([results](https://github.com/DBinvent/yaxaha/blob/main/rmc/results.md))
+- Resilience and membership under change, on three linked clusters: [RMC](https://github.com/DBinvent/yt-cluster-tests/tree/main/rmc) ([results](https://github.com/DBinvent/yt-cluster-tests/blob/main/rmc/results.md))
 
 ### Run it
 Three writable nodes, on your laptop, in one command - the package comes from the public repository:
 ```
-git clone https://github.com/DBinvent/yaxaha.git
-cd yaxaha
+git clone https://github.com/DBinvent/yt-cluster-tests.git
+cd yt-cluster-tests
 APT_HOST=apt.dbinvent.com APT_HOST_IP= ./docker.sh
 
 # then, inside the container - a three-node cluster:
