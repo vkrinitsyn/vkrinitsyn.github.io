@@ -132,7 +132,7 @@ YT Cluster's key differentiators:
 YT Cluster is part of a broader toolchain developed by Vladimir Krinitsyn and DBinvent:
 
 - **[rppd](https://github.com/vkrinitsyn/rppd)** - Rust + Python + PostgreSQL integration layer (4 stars). Enables Python UDFs inside PostgreSQL backed by Rust performance.
-- **[schema_guard](https://github.com/vkrinitsyn/schema_guard)** - YAML-driven PostgreSQL schema migration tool. Manages cluster-wide schema changes safely during rolling upgrades.
+- **[Schema Guard](https://github.com/DBinvent/sge)** (`sge`) - open-source (MIT) PostgreSQL schema migration: versioned SQL scripts and declarative YAML, tracked by checksum per environment, built on the [schema_guard](https://github.com/vkrinitsyn/schema_guard) library. On a cluster a change is rolled node by node while the cluster keeps serving.
 - **[shim](https://github.com/vkrinitsyn/shim)** - Sliding Window Histogram for timeframe analysis. Used for query pattern monitoring that feeds the AI-assisted partitioning.
 - **[etcd](https://github.com/vkrinitsyn/etcd)** - Rust PoC of etcd v3 queue messaging. Informs the cluster coordination protocol design.
 - **[marg](https://github.com/vkrinitsyn/marg)** - Meta-config from application arguments. Used for cluster node configuration management.
@@ -259,17 +259,20 @@ Use `iptables` or Docker network rules to split nodes 1+2 from node 3. Show the 
 
 **Talk track:** This is where CAP theorem bites traditional systems hard. With YT Cluster, you've already declared your preference per table. The cluster enforces your policy automatically.
 
-### 8.6 Segment 5: Schema Migration with schema_guard (5 min)
+### 8.6 Segment 5: Schema Migration with Schema Guard (5 min)
 
 **Demo:**
 ```bash
-# Cluster-wide schema change, zero downtime
-schema_guard apply --cluster --schema schema.yaml
+# A rolling schema change, no downtime: the same migration on each node in turn,
+# followers first, the leader last, while the application keeps writing
+for cfg in node2.cfg node3.cfg node1.cfg; do
+  sge -c "$cfg" --source_dir=./schema migrate || break
+done
 ```
 
-Show that the schema change applies to all nodes, validates consistency across nodes, and rolls back atomically if any node rejects it.
+Show that the cluster keeps serving through the roll; that during it a migrated node reports the table as "schema differs" (`select * from yt_info('W')`) and is held out of row comparison rather than compared across two shapes; and that every node has the same schema once the roll ends. A rolled change is an expand step - a nullable column, a column with a default, an index - and the contract step comes only after every node has it. The roll stops at the first node that fails, and each node's `sge_history` says exactly how far it got.
 
-**Talk track:** Distributed schema changes are one of the hardest operational problems. schema_guard treats the cluster's schema as a versioned artifact, not a per-node configuration.
+**Talk track:** Distributed schema changes are one of the hardest operational problems. Schema Guard treats the schema as a versioned artifact with its history in each node's own database, and the cluster checks that every node agrees on it. Queuing the roll per node from a single deploy is designed, not yet released.
 
 ### 8.7 Q&A and Discussion (5 min)
 
