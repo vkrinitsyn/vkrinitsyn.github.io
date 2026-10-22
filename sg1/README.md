@@ -1,5 +1,5 @@
 # [Schema guard](/sg1/)
-The [declarative](https://github.com/vkrinitsyn/schema_guard) Rust based portion of the [project](https://www.dbinvent.com/rdbm/) discuss bellow.
+Open-source (MIT) schema migration for PostgreSQL: the `sge` tool on [GitHub](https://github.com/DBinvent/sge) and [dbinvent.com/sge](https://www.dbinvent.com/sge/), built on its [declarative](https://github.com/vkrinitsyn/schema_guard) Rust library, discussed below.
 
 Almost every website, from the simplest blogs to complex platforms, relies on databases. Of course, databases are no longer accessed directly from the code that generates the website, as was common in the past with PHP and JSP. Modern websites are typically structured in two or three layers:  
 Static or pseudo-static CRM content, which either doesn’t use a database or interacts with it as a third-party service.  
@@ -34,9 +34,11 @@ Using a declarative method, which generates the required SQL from a simple text-
 Let’s begin:  
 
 ```bash
-curl https://www.dbinvent.com/dist/rdbm-unix-latest.zip -o rdbm-latest.zip && unzip ./rdbm-latest.zip
+sudo apt install schema-guard     # from apt.dbinvent.com: https://www.dbinvent.com/sge/downloads
+# or, with Rust
+cargo install schema_guard
 ```
-This downloads a console application in binary format, ready to run on Linux or Windows (via WSL). The most convenient configuration method is creating and using a text file:
+Either gives the `sge` console application. The most convenient configuration method is creating and using a text file:
 ```bash
 echo "db_host=localhost
 db_name=postgres
@@ -46,7 +48,7 @@ db_password=xxx" > db.cfg
 ```
 If your database already contains tables, you can generate a schema snapshot:  
 ```bash
-./rdbm -c db.cfg --snapshot_to=schema.yaml snapshot
+sge -c db.cfg --snapshot_to=schema.yaml snapshot
 ```
 Next, you can edit or create a schema description file in YAML format, such as:  
 ```yaml
@@ -82,18 +84,18 @@ database:
 This text represents a highly readable and user-friendly YAML format, though it’s sensitive to indentation and formatting.
 Save the file as ```./S1__schema.yaml```. Then run:  
 ```bash
-./rdbm -c db.cfg --source_dir=. --dry_run=y migrate
+sge -c db.cfg --source_dir=. --dry_run=y migrate
 ```
 
 This attempts to connect to the database and generates scripts to create the table without executing them.
 If the database doesn’t exist, the ```--createdb=y``` parameter will create it. Without ```--dry_run=y``` (or with ```--dry_run=n```),
-the SQL executes, creating the table and logging the results in the ```public.rdbm_history``` history table. 
+the SQL executes, creating the table and logging the results in the ```public.sge_history``` history table. 
 This table can be overridden, e.g., to deploy_history.deploys, using two parameters: ```--schema=deploy_history``` ```--table=deploys```.
 Notably, re-running the command won’t alter the database, even if the history table is missing, but this applies only to scripts of this type.
 For detailed help, run:  
 
 ```bash
-./rdbm help migrate
+sge help migrate
 ```
 
 Next, add to the script:  

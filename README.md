@@ -17,7 +17,7 @@ Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/pak
 - **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
 - **MPP analytics** - Apache DataFusion planned against the declared topology, ClickHouse for columnar workloads; neither needs a copy of the data
 - **Asking in plain language** - `yt_llm('...')` on a local model returns PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives; the model sees the catalog, never a row ([how it works](/yt/llm.md))
-- **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) and schema migration ([Schema Guard](/sg1#schema-guard)) ship with the cluster
+- **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) ship with the cluster, and it applies schema migrations with [Schema Guard](/sg1#schema-guard)'s library - the `sge` tool itself is an open-source package of its own
 
 From 30 years of personal IT experience into **[30 pillars of the solution](/yt/pillars.md)** - what it solves, one line each.
 
@@ -25,13 +25,15 @@ Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous
 [What replication actually costs](https://dbinvent.github.io/yt-cluster-performance.html) &middot; [Where Rows Live](https://dbinvent.github.io/where-rows-live.html) &middot; [CAP](/cap.md) &middot; [Asking in plain language](/yt/llm.md) &middot; [All about YT Cluster](/yt/)
 
 
-## Schema guard
-[link](/sg1#schema-guard) 
-Declarative and Imperative (Flyway inspired) DB schema management.   
-[This](https://github.com/vkrinitsyn/schema_guard) Rust based opensource project is a portion of [SchemaGuard](/sg1#schema-guard) complete commercial solution. 
-- Designed for embed schema into Rust code.
-- Support flexible schema updates if required
-- Does not require history table
+## Schema Guard
+[link](/sg1#schema-guard) &middot; [dbinvent.com/sge](https://www.dbinvent.com/sge/)
+Open-source schema migration for PostgreSQL - MIT licensed and free for any use, commercial included: [DBinvent/sge](https://github.com/DBinvent/sge).
+- **A Flyway replacement with no JVM** - its files run as they are: `V1_2__init.sql` versioned scripts and `R__view.sql` repeatables
+- **Declarative and imperative, mixed** - a whole schema in one YAML file, turned into SQL for you, alongside plain SQL scripts
+- **History in the target database** - every environment knows which versions it applied and with which checksum, a `select` away (`sge_history`)
+- **One binary, `sge`** - `apt install schema-guard` (the same repository as YT Cluster) or `cargo install schema_guard`
+- **A Rust library too** - [`schema_guard`](https://crates.io/crates/schema_guard) runs migrations from your own code; it is built on [`schema_guard_tokio`](https://crates.io/crates/schema_guard_tokio) ([source](https://github.com/vkrinitsyn/schema_guard)), the declarative YAML schema library, which embeds a schema in Rust code and needs no history table
+- **Cluster-ready** - YT Cluster applies schema with its library, each migration ordered against ordinary writes on every node
 
 ## RPPD Rust-Python-Postgres-Discovery
 Now with etcd queueing:

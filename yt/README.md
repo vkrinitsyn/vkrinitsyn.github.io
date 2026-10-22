@@ -16,7 +16,7 @@ Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/pak
 - **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
 - **MPP analytics** - Apache DataFusion planned against the declared topology, ClickHouse for columnar workloads; neither needs a copy of the data
 - **Asking in plain language** - `yt_llm('...')` on a local model returns PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives; the model sees the catalog, never a row ([how it works](llm.md))
-- **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) and schema migration ([Schema Guard](/sg1#schema-guard)) ship with the cluster
+- **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) ship with the cluster, and it applies schema migrations with [Schema Guard](/sg1#schema-guard)'s library - the `sge` tool itself is an open-source package of its own
 - **C and Rust** - the extension in C, the server and tools in Rust
 
 Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous replication on a write-only load and **1.6x (162%)** on an 80/20 read/write mix, at equal replication scope. Full synchronous two-phase commit across every node costs more - it is there for the tables that need it, not the default.
