@@ -35,10 +35,14 @@ Let’s begin:
 
 ```bash
 sudo apt install schema-guard     # from apt.dbinvent.com: https://www.dbinvent.com/sge/downloads
+# or, a static binary for any Linux on x86-64
+curl -fsSL https://apt.dbinvent.com/paks/sge-latest.tar.gz | sudo tar -xz -C /usr/local
 # or, with Rust
 cargo install schema_guard
+# or, no install: sge and psql in an image, run in the current directory
+docker run --rm -v "$PWD:/work" dbinvent/sge help migrate
 ```
-Either gives the `sge` console application. The most convenient configuration method is creating and using a text file:
+Each gives the `sge` console application (the image runs it as its entrypoint). The most convenient configuration method is creating and using a text file:
 ```bash
 echo "db_host=localhost
 db_name=postgres

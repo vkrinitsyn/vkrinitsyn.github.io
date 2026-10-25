@@ -31,7 +31,19 @@ Measured, not asserted: **1.7x the throughput (171%)** of PostgreSQL synchronous
 - Resilience and membership under change, on three linked clusters: [RMC](https://github.com/DBinvent/yt-cluster-tests/tree/main/rmc) ([results](https://github.com/DBinvent/yt-cluster-tests/blob/main/rmc/results.md))
 
 ### Run it
-Three writable nodes, on your laptop, in one command - the package comes from the public repository:
+Three writable nodes, on your laptop - a container each, [`dbinvent/yt`](https://hub.docker.com/r/dbinvent/yt): PostgreSQL 18 with the extension and ytserv beside it. Take `compose.yml` and `schema.sql` from [Running in Docker](https://www.dbinvent.com/cluster/guide/docker#cluster), then:
+```
+docker compose up -d
+docker compose exec yt1 psql -U postgres -d app -c "insert into orders (item) values ('from yt1')"
+docker compose exec yt2 psql -U postgres -d app -c "insert into orders (item) values ('from yt2')"
+docker compose exec yt3 psql -U postgres -d app -c "select item, node from orders"
+```
+Every node has every row, whichever node it was written on. One node alone:
+```
+docker run -d --name yt1 --hostname yt1 -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=app \
+    -p 5441:5432 -v yt1:/var/lib/postgresql dbinvent/yt:1.20
+```
+Or the integration tests' own container, with the package from the public repository:
 ```
 git clone https://github.com/DBinvent/yt-cluster-tests.git
 cd yt-cluster-tests

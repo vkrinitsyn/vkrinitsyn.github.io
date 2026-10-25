@@ -7,6 +7,9 @@
 Vanilla PostgreSQL plus an extension and a server process - no forked engine, no proxy in front, no managed-cloud lock-in - [dbinvent.com](https://dbinvent.com/)
 
 Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/paks/nightly/badge.svg)](https://github.com/DBinvent/yt-cluster-tests/blob/main/nightly/results.yaml)
+
+**News, 2026-10-25 - under Jepsen,** the industry standard for data consistency testing, very picky and very aggressive by design: 51 findings, every one fixed and retested,
+none critical from the first run on - [the findings](https://claude.ai/artifact/Dtu2vx8WUyNm19J8NBjRFH) by severity &middot; [the news](https://www.dbinvent.com/news/yt-cluster-under-jepsen)
 - **No data transfer** - your database becomes a cluster node where it already sits; nothing is dumped, copied or migrated
 - **No vendor lock** - remove the extension and you are back to a single plain PostgreSQL, with your data in place
 - **No code change** - same SQL, same drivers, same extensions; a plain `COMMIT` is a cluster commit, with no PgBouncer and no explicit completion call
@@ -17,6 +20,7 @@ Released - tested and ready: [![nightly end-to-end](https://apt.dbinvent.com/pak
 - **Software-defined topology** (AZ, zones, tiers) - replication scope and row placement are rules, rewritten online with no redeploy or downtime
 - **MPP analytics** - Apache DataFusion planned against the declared topology, ClickHouse for columnar workloads; neither needs a copy of the data
 - **Asking in plain language** - `yt_llm('...')` on a local model returns PostgreSQL SQL, ClickHouse SQL or a DataFusion script, chosen by where the data lives; the model sees the catalog, never a row ([how it works](/yt/llm.md))
+- **A node is one container** - [`dbinvent/yt`](https://hub.docker.com/r/dbinvent/yt): PostgreSQL 18 with the extension and ytserv, set up from its environment; three writable nodes with Docker Compose in [Running in Docker](https://www.dbinvent.com/cluster/guide/docker)
 - **One package, not a suite** - server functions ([RPPD](/rppd#rppd---rust-python-postgres-discovery)), etcd key-value, streaming and queue ([etcd](/etcd#etcd)) ship with the cluster, and it applies schema migrations with [Schema Guard](/sg1#schema-guard)'s library - the `sge` tool itself is an open-source package of its own
 
 From 30 years of personal IT experience into **[30 pillars of the solution](/yt/pillars.md)** - what it solves, one line each.
@@ -31,7 +35,7 @@ Open-source schema migration for PostgreSQL - MIT licensed and free for any use,
 - **A Flyway replacement with no JVM** - its files run as they are: `V1_2__init.sql` versioned scripts and `R__view.sql` repeatables
 - **Declarative and imperative, mixed** - a whole schema in one YAML file, turned into SQL for you, alongside plain SQL scripts
 - **History in the target database** - every environment knows which versions it applied and with which checksum, a `select` away (`sge_history`)
-- **One binary, `sge`** - `apt install schema-guard` (the same repository as YT Cluster) or `cargo install schema_guard`
+- **One binary, `sge`** - `apt install schema-guard` (the same repository as YT Cluster), the image [`dbinvent/sge`](https://hub.docker.com/r/dbinvent/sge) (`sge` and `psql`, about 12 MB), a static binary for any Linux, or `cargo install schema_guard`
 - **A Rust library too** - [`schema_guard`](https://crates.io/crates/schema_guard) runs migrations from your own code; it is built on [`schema_guard_tokio`](https://crates.io/crates/schema_guard_tokio) ([source](https://github.com/vkrinitsyn/schema_guard)), the declarative YAML schema library, which embeds a schema in Rust code and needs no history table
 - **Cluster-ready** - YT Cluster applies schema with its library, each migration ordered against ordinary writes on every node
 
