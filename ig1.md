@@ -1,3 +1,8 @@
+---
+layout: default
+title: "DBinvent infographics"
+---
+
 # DBinvent infografics
 
 use remotion for building a video for pitch.html

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "RPPD - Rust Python Postgres Discovery"
+---
+
 # RPPD - Rust Python Postgres Discovery
 
 ![overview](rppd.etcd.svg)

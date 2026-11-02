@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Peer-Verified Contribution Network"
+---
+
 # Peer-Verified Contribution Network
 
 *Time contributed to shared projects, signed by the people you worked with and for.*

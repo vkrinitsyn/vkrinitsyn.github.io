@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Asking a YT Cluster in plain language: one question, three engines"
+---
+
 # Asking a YT Cluster in plain language: one question, three engines
 
 *A test report, 2026-09-30*

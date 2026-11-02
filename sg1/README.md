@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Schema guard"
+---
+
 # [Schema guard](/sg1/)
 Open-source (MIT) schema migration for PostgreSQL: the `sge` tool on [GitHub](https://github.com/DBinvent/sge) and [dbinvent.com/sge](https://www.dbinvent.com/sge/), built on its [declarative](https://github.com/vkrinitsyn/schema_guard) Rust library, discussed below.
 

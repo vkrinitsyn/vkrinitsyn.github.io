@@ -1,3 +1,8 @@
+---
+layout: default
+title: "There Is No Best Model. There Is Only Your Label Quality."
+---
+
 # There Is No Best Model. There Is Only Your Label Quality.
 
 **What a five-way A/B on REST API anomaly detection taught me - and why I applied the same standard to our own product page.**

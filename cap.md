@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Solving CAP: How YT Cluster Navigates the Impossible Triangle"
+---
+
 # Solving CAP: How YT Cluster Navigates the Impossible Triangle
 
 *Vladimir Krinitsyn*

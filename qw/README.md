@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Skills confirmed by the people you worked with"
+---
+
 ## Skills confirmed by the people you worked with. 
 
 ### *Found through friends of friends.*

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "QW Design Review - FAQ"
+---
+
 # QW Design Review - FAQ
 
 Consolidated from a review of `qw/abstract.md` (Decentralized Skills Exchange

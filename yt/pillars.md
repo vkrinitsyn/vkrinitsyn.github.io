@@ -1,3 +1,8 @@
+---
+layout: default
+title: "30 pillars of YT Cluster"
+---
+
 # 30 pillars of YT Cluster
 
 [Articles](https://vkrinitsyn.github.io) &middot; [YT Cluster](/yt/)

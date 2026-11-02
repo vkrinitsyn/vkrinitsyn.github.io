@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Why Every Database Cluster Node Should Run Its Own DNS Server"
+---
+
 # Why Every Database Cluster Node Should Run Its Own DNS Server
 
 When you deploy a distributed PostgreSQL cluster, one of the first infrastructure dependencies you hit is service discovery. Which nodes are alive? Where should clients connect? How does a new node find its peers?
